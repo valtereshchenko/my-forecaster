@@ -1,0 +1,22 @@
+.wrapper {
+  height: 300px;
+  position: relative;
+  margin: 50px;
+}
+.graphContainer {
+  height: 300px;
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  z-index: 0;
+}
+.secondGraph {
+  height: 300px;
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  z-index: 4;
+}
+.App-dark {
+  background-color: #1a2138;
+}
