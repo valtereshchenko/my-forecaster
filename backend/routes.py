@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Body, Request, Response, HTTPException, status
-from fastapi.encoders import jsonable_encoder
+# from fastapi.encoders import jsonable_encoder
 from typing import List
 from models import SalesModel, SalesUpdate, PyObjectId, PredictionModel, ModelModel, ModelOut
 import pandas as pd
@@ -42,19 +42,22 @@ def find_sales(product: str, time: int, request: Request) -> pd.DataFrame:
         products = df_dictionary.copy()
 
     print(products)
-    # prediction = predict(products, time, product)
-    # prediction_to_insert = prediction.to_dict(orient="records")
-    # # prediction_to_return = prediction.to_dict()
+    prediction = predict(products, time, product)
+    prediction_less_history = prediction.iloc[500:]
+    print('prediction_less_history')
+    prediction_to_insert = prediction_less_history.to_dict(orient="records")
 
-    # new_prediction = request.app.database.predictions.insert_many(
-    #     prediction_to_insert)
+    new_prediction = request.app.database.predictions.insert_many(
+        prediction_to_insert)
 
-    # created_prediction = list(request.app.database.predictions.find(
-    #     {"_id": {'$in': new_prediction.inserted_ids}}
-    # ))
+    created_prediction = list(request.app.database.predictions.find(
+        {"_id": {'$in': new_prediction.inserted_ids}}
+    ))
 
-    created_prediction = list(request.app.database.predictions.find({'_id': {'$in': [PyObjectId(
-        '63fc70ff8f3103e1d7341e9a'), PyObjectId('63fc70ff8f3103e1d7341e9b'), PyObjectId('63fc70ff8f3103e1d7341e9c')]}}))
+    print('CREATED PREDICITON', created_prediction)
+
+    # created_prediction = list(request.app.database.predictions.find({'_id': {'$in': [PyObjectId(
+    #     '63fc70ff8f3103e1d7341e9a'), PyObjectId('63fc70ff8f3103e1d7341e9b'), PyObjectId('63fc70ff8f3103e1d7341e9c')]}}))
 
     if created_prediction is not None:
         return created_prediction  # the response is a list of objects

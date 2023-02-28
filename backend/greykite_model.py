@@ -27,7 +27,9 @@ def predict(data: pd.DataFrame, forecast_horizon: int, product: str):
     )
     forecast = result.forecast
     forecasted_data = forecast.df
-    forecasted_data = forecasted_data.rename(
-        columns={'actual': f'{product}_actual', 'forecast': f'{product}_forecast'})
+    # forecasted_data = forecasted_data.rename(
+    #     columns={'actual': f'{product}_actual', 'forecast': f'{product}_forecast'})
+    forecasted_data = forecasted_data.round(0).fillna(0)
+
     print('forecasted data', forecasted_data)
     return forecasted_data

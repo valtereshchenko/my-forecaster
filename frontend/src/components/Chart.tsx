@@ -24,6 +24,14 @@ export default function Chart({ actual, prediction }: any) {
               legendOffset: -40,
             }}
             theme={getColoredAxis(line1Color)}
+            axisBottom={{
+              tickSize: 5,
+              tickPadding: 5,
+              tickRotation: 75,
+              legend: "transportation",
+              legendOffset: 36,
+              legendPosition: "middle",
+            }}
             margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
           />
         </div>

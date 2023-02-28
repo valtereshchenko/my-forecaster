@@ -39,8 +39,6 @@ export default function Dashboard() {
       });
     });
 
-    console.log("resForecast", resForecast);
-
     let resActual: any = [{ id: "actual", data: [] }];
     data.forEach((element: { saleDate: any; actual: any }) => {
       resActual.forEach((object: any) => {
@@ -53,9 +51,6 @@ export default function Dashboard() {
 
     return prediction;
   }
-
-  console.log("PRED", prediction);
-  console.log("ACT", actual);
 
   return (
     <>

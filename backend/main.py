@@ -3,6 +3,7 @@ from dotenv import dotenv_values
 from pymongo import MongoClient
 from routes import router as product_router
 from fastapi.middleware.cors import CORSMiddleware
+# TODO add all the dependncies to the requirements.txt (including greykite)
 
 config = dotenv_values(".env")
 

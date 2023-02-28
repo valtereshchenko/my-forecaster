@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from bson import ObjectId
-from typing import Optional, Sequence
+from typing import Optional, Sequence, Union
 from datetime import datetime
 import uuid
 
@@ -90,10 +90,10 @@ class SalesUpdate(BaseModel):
 class PredictionModel(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     saleDate: datetime = Field(...)
-    actual: float = Field(...)
-    forecast: float = Field(...)
-    forecast_upper: float = Field(...)
-    forecast_lower: float = Field(...)
+    actual: Optional[int] = Field(...)
+    forecast: int = Field(...)
+    forecast_lower: int = Field(...)
+    forecast_upper: int = Field(...)
 
     class Config:
         allow_population_by_field_name = True
@@ -105,7 +105,7 @@ class PredictionModel(BaseModel):
                 "saleDate": '2020-01-01',
                 "actual": "333",
                 "forecast": "256.3",
-                "forecast_upper": "333",
                 "forecast_lower": "256.3",
+                "forecast_upper": "333",
             }
         }
