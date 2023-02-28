@@ -1,18 +1,21 @@
 import React from "react";
-import { data, data2 } from "./data.js";
+// import { data, data2 } from "./data.js";
 import { ResponsiveLine } from "@nivo/line";
 
 const line1Color = "#2E3648"; //dark theme"#FFD200";
 
-export default function Chart(actual: any, prediction: any) {
-  console.log("actual", actual);
-  console.log("prediction", prediction);
+type ChartProps = {
+  actual: { data: [{}]; id: string }[];
+  prediction: { data: [{}]; id: string }[];
+};
+
+export default function Chart({ actual, prediction }: any) {
   return (
     <div className="App">
       <div className="wrapper">
         <div className="graphContainer">
           <ResponsiveLine
-            data={actual.actual}
+            data={actual}
             colors={[line1Color]}
             layers={["grid", "axes", "lines", "markers", "legends"]}
             axisLeft={{
@@ -26,7 +29,7 @@ export default function Chart(actual: any, prediction: any) {
         </div>
 
         <div className="secondGraph">
-          <SecondGraph prediction={actual.prediction} />
+          <SecondGraph prediction={prediction} actual={actual} />
         </div>
       </div>
     </div>
@@ -34,13 +37,11 @@ export default function Chart(actual: any, prediction: any) {
 }
 
 // I want this to be on top of the other graph
-const SecondGraph = (prediction: any) => {
-  // const data1And2 = data.concat(data2);
-  // console.log("Graph2 Data: ", data1And2);
-  console.log("prediciton second", prediction);
+const SecondGraph = ({ prediction, actual }: any) => {
+  const data1And2 = actual.concat(prediction);
   return (
     <ResponsiveLine
-      data={prediction.prediction}
+      data={data1And2}
       colors={[
         "rgba(255, 255, 255, 0)",
         "#7b1fa2",
