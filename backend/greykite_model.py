@@ -27,10 +27,11 @@ def predict(data: pd.DataFrame, forecast_horizon: int, product: str):
     )
     forecast = result.forecast
     forecasted_data = forecast.df
-    print(forecasted_data)
+
     # forecasted_data = forecasted_data.rename(
     #     columns={'actual': f'{product}_actual', 'forecast': f'{product}_forecast'})
     # to speed up and  plot only monthly data
+
     forecasted_data['saleDate'] = pd.to_datetime(forecasted_data['saleDate'])
     forecasted_data.set_index('saleDate', inplace=True)
     forecasted_data = forecasted_data.resample('MS').sum().reset_index()

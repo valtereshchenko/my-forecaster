@@ -2,7 +2,6 @@ from pydantic import BaseModel, Field
 from bson import ObjectId
 from typing import Optional, Sequence, Union
 from datetime import datetime, date
-import uuid
 
 
 class PyObjectId(ObjectId):

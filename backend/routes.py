@@ -11,7 +11,7 @@ router = APIRouter()
 @router.get("/", response_description="List all sales", response_model=List[SalesModel])
 def list_sales(request: Request):
     sales = list(request.app.database["sales_new"].find(limit=100))
-    print()
+
     return sales
 
 
@@ -41,7 +41,6 @@ def find_sales(product: str, time: int, request: Request) -> pd.DataFrame:
         df_dictionary = pd.DataFrame(data=d)
         products = df_dictionary.copy()
 
-    print(products)
     prediction = predict(products, time, product)
     # prediction_less_history = prediction.iloc[700:]
     # print('prediction_less_history')
@@ -53,8 +52,6 @@ def find_sales(product: str, time: int, request: Request) -> pd.DataFrame:
     created_prediction = list(request.app.database.predictions.find(
         {"_id": {'$in': new_prediction.inserted_ids}}
     ))
-
-    print('CREATED PREDICITON', created_prediction)
 
     # created_prediction = list(request.app.database.predictions.find({'_id': {'$in': [PyObjectId(
     #     '63fc70ff8f3103e1d7341e9a'), PyObjectId('63fc70ff8f3103e1d7341e9b'), PyObjectId('63fc70ff8f3103e1d7341e9c')]}}))
