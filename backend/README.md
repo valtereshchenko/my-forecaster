@@ -6,4 +6,6 @@ DELETE /products/<id>: to delete a sale record by its ID
 
 # RUN THE BACKEND
 
--m uvicorn main:app --reload
+```
+  python -m uvicorn main:app --reload
+```
