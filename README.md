@@ -7,7 +7,7 @@ final project TK &amp;&amp; AllWomen Bootcamp
 - :hourglass_flowing_sand: Display information about MyForecaster (how it works? what can it do for you?) & Display some graphs from Unsplash API.
 - :hourglass_flowing_sand: Display a Login && Registration Pop-up on the Home screen.
 - :hourglass_flowing_sand: Registration/Login flow (with email - password verification)
-- :hourglass_flowing_sand: Display a dropdown with products and forecast horizon options for user to choose from. Visualize the data with the options selected.
+- :white_check_mark: Display a dropdown with products and forecast horizon options for user to choose from. Visualize the data with the options selected.
 - :hourglass_flowing_sand: Users can add/remove graphs from their personal Dashboard
 
 ## Installation
