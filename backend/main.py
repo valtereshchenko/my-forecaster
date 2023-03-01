@@ -3,7 +3,7 @@ from dotenv import dotenv_values
 from pymongo import MongoClient
 from routes import router as product_router
 from fastapi.middleware.cors import CORSMiddleware
-# TODO add all the dependncies to the requirements.txt (including greykite)
+import certifi
 
 config = dotenv_values(".env")
 
@@ -20,6 +20,7 @@ app.add_middleware(
 
 @app.on_event("startup")
 def startup_db_client():
+    # please add: ssl_ca_certs=certifi.where() into MongoClient
     app.mongodb_client = MongoClient(config["ATLAS_URI"])
     app.database = app.mongodb_client[config["DB_NAME"]]
 

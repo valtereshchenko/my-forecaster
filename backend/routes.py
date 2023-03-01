@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Body, Request, Response, HTTPException, status
-# from fastapi.encoders import jsonable_encoder
 from typing import List
 from models import SalesModel, SalesUpdate, PyObjectId, PredictionModel, ModelModel, ModelOut
 import pandas as pd
@@ -24,8 +23,6 @@ def list_sales(request: Request):
 #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
 #                         detail=f"Sale with ID {id} not found")
 
-# get all records for paper sales
-
 
 @router.get("/prediction/{product}/{time}", response_description="Get all sales by column name", response_model=List[PredictionModel])
 def find_sales(product: str, time: int, request: Request) -> pd.DataFrame:
@@ -42,8 +39,7 @@ def find_sales(product: str, time: int, request: Request) -> pd.DataFrame:
         products = df_dictionary.copy()
 
     prediction = predict(products, time, product)
-    # prediction_less_history = prediction.iloc[700:]
-    # print('prediction_less_history')
+
     prediction_to_insert = prediction.to_dict(orient="records")
 
     new_prediction = request.app.database.predictions.insert_many(
@@ -52,9 +48,6 @@ def find_sales(product: str, time: int, request: Request) -> pd.DataFrame:
     created_prediction = list(request.app.database.predictions.find(
         {"_id": {'$in': new_prediction.inserted_ids}}
     ))
-
-    # created_prediction = list(request.app.database.predictions.find({'_id': {'$in': [PyObjectId(
-    #     '63fc70ff8f3103e1d7341e9a'), PyObjectId('63fc70ff8f3103e1d7341e9b'), PyObjectId('63fc70ff8f3103e1d7341e9c')]}}))
 
     if created_prediction is not None:
         return created_prediction  # the response is a list of objects

@@ -12,8 +12,11 @@ final project TK &amp;&amp; AllWomen Bootcamp
 
 ## Installation
 
+Frontend:
 Execute `npm install` from inside your app directory to download the dependencies.
 Make sure to add the .env file on your local machine one the code is cloned from this repo.
+</br>
+Backend: `pip install -r requirements.txt`
 
 ## Running the project
 
