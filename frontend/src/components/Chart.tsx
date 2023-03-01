@@ -1,15 +1,20 @@
-import React from "react";
-// import { data, data2 } from "./data.js";
 import { ResponsiveLine } from "@nivo/line";
 
 const line1Color = "#2E3648"; //dark theme"#FFD200";
 
-type ChartProps = {
-  actual: { data: [{}]; id: string }[];
-  prediction: { data: [{}]; id: string }[];
-};
+// type ChartProps = {
+//   actual: { data: [{}]; id: string }[];
+//   prediction: { data: [{}]; id: string }[];
+// };
+
+// const getRequiredDateFormat = (timeStamp: any, format = "MM-DD-YYYY") => {
+//   return moment(timeStamp).format(format);
+// };
 
 export default function Chart({ actual, prediction }: any) {
+  let str = JSON.stringify(actual[0].data, (k, v) => (v === 0 ? null : v));
+  let resulting_data = JSON.parse(str);
+  actual[0].data = resulting_data;
   return (
     <div className="App">
       <div className="wrapper">
@@ -21,18 +26,15 @@ export default function Chart({ actual, prediction }: any) {
             axisLeft={{
               legend: "Actual Sales",
               legendPosition: "middle",
-              legendOffset: -40,
+              legendOffset: -50,
+            }}
+            axisBottom={{
+              tickRotation: 75,
+              legendOffset: -80,
+              legendPosition: "start",
             }}
             theme={getColoredAxis(line1Color)}
-            axisBottom={{
-              tickSize: 5,
-              tickPadding: 5,
-              tickRotation: 75,
-              legend: "transportation",
-              legendOffset: 36,
-              legendPosition: "middle",
-            }}
-            margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
+            margin={{ top: 50, right: 50, bottom: 70, left: 55 }}
           />
         </div>
 
@@ -46,25 +48,26 @@ export default function Chart({ actual, prediction }: any) {
 
 // I want this to be on top of the other graph
 const SecondGraph = ({ prediction, actual }: any) => {
-  const data1And2 = actual.concat(prediction);
+  let data1And2 = actual.concat(prediction);
   return (
     <ResponsiveLine
       data={data1And2}
+      xFormat="time:%Y-%m-%d"
       colors={[
         "rgba(255, 255, 255, 0)",
         "#7b1fa2",
       ]} /* Make the first line transparent with 0 opacity */
-      margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
+      margin={{ top: 50, right: 55, bottom: 20, left: 55 }}
       axisRight={{
         legend: "Forecasted Sales",
         legendPosition: "middle",
-        legendOffset: 40,
+        legendOffset: 50,
       }}
       axisLeft={null}
       axisTop={null}
+      axisBottom={null}
       enableGridY={false}
       enableGridX={false}
-      axisBottom={null}
       theme={getColoredAxis("#7B1FA2")} //dark theme #99EBFD
       /* Add this for tooltip */
       useMesh={false}
@@ -78,7 +81,7 @@ const SecondGraph = ({ prediction, actual }: any) => {
               border: "1px solid #ccc",
             }}
           >
-            <div>x: {slice.points[0].data.x.toString()}</div>
+            <div>date: {slice.points[0].data.x.toString()}</div>
             {slice.points.map((point) => (
               <div
                 key={point.id}

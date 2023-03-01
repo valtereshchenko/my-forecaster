@@ -43,9 +43,9 @@ def find_sales(product: str, time: int, request: Request) -> pd.DataFrame:
 
     print(products)
     prediction = predict(products, time, product)
-    prediction_less_history = prediction.iloc[500:]
-    print('prediction_less_history')
-    prediction_to_insert = prediction_less_history.to_dict(orient="records")
+    # prediction_less_history = prediction.iloc[700:]
+    # print('prediction_less_history')
+    prediction_to_insert = prediction.to_dict(orient="records")
 
     new_prediction = request.app.database.predictions.insert_many(
         prediction_to_insert)
