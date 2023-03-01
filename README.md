@@ -18,6 +18,7 @@ Make sure to add the .env file on your local machine one the code is cloned from
 ## Running the project
 
 Frontend: `npm run`
+</br>
 Backend: `python -m uvicorn main:app --reload`
 
 ## API
