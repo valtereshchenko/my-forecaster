@@ -1,29 +1,44 @@
-import React from "react";
-import { Box, Container, Grid, Paper, Typography, Button } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Grid, Typography, Button } from "@mui/material";
 import TouchRipple from "@mui/material/ButtonBase/TouchRipple";
 import Item from "@mui/material/Grid";
 
 export default function Home() {
+  const [res, setRes] = useState({ urls: { regular: "", small: "" } });
+
+  const fetchRequest = async () => {
+    const data = await fetch(
+      "https://api.unsplash.com/search/photos?query=artificial intelligence&per_page=50&client_id=gK52De2Tm_dL5o1IXKa9FROBAJ-LIYqR41xBdlg3X2k"
+    );
+    const dataJ = await data.json();
+    const result = dataJ.results;
+    console.log(result);
+    let random_img = result[Math.floor(Math.random() * result.length)];
+    setRes(random_img);
+  };
+
+  useEffect(() => {
+    fetchRequest();
+  }, []);
+
   return (
     <Box component="main">
       <Box className="css-1ybfalx"></Box>
       <Box className="css-0">
         <Box className="css-1gygmt4">
           <Box className="css-374h4r">
-            <Grid container spacing={4} className="css-1tz8m30">
-              <Item className="css-himpyl" item xs={12} md={6}>
+            <Grid container spacing={4} className="MuiGrid-item css-1tz8m30">
+              <Grid className="css-himpyl" item xs={12} md={6}>
                 <Box component="div" aos-init aos-animate data-aos="fade-right">
                   <Box className="css-1qm1lh" sx={{ marginBottom: "16px" }}>
-                    <Typography variant="h2" className="css-118ie5u">
+                    <span className="css-118ie5u">
                       Get insights into
                       <br />
                       your business'{" "}
-                      <Typography variant="inherit" className="css-1tukh29">
-                        success
-                      </Typography>
-                    </Typography>
+                      <span className="css-1tukh29">success</span>
+                    </span>
                   </Box>
-                  <Box className="css-i3pbo" sx={{ marginButtom: "24px" }}>
+                  <Box className="css-i3pbo">
                     <Typography
                       component="p"
                       variant="h6"
@@ -34,37 +49,32 @@ export default function Home() {
                       inventory and more wit the help of MyForecaster.
                     </Typography>
                   </Box>
-                  <Box className="css-14hwaxf" sx={{ display: "flex" }}>
-                    <Button
-                      variant="contained"
-                      size="large"
+                  <Box className="css-14hwaxf">
+                    <a
                       className="css-uwfjn8"
                       href="/start"
+                      tabIndex={0}
+                      target="blank"
                     >
                       Quick Start{" "}
                       <TouchRipple className="css-w0pj6f"></TouchRipple>
-                    </Button>
+                    </a>
                     <Box className="css-np4b2e">
-                      <Button
-                        variant="outlined"
-                        size="large"
-                        className="css-1x0ry33"
-                        href="/docs"
-                      >
+                      <a className="css-1x0ry33" href="/docs">
                         View documentation{" "}
                         <TouchRipple className="css-w0pj6f"></TouchRipple>
-                      </Button>
+                      </a>
                     </Box>
                   </Box>
                 </Box>
-              </Item>
-              <Item className="css-iol86l" xs={12} md={6}>
+              </Grid>
+              <Grid xs={12} md={6} className="MuiGrid-item css-iol86l">
                 <Box className="css-1aez2l4">
                   <Box className="home-image">
-                    <svg></svg>
+                    <img src={res.urls.regular} alt="ai 📷" />
                   </Box>
                 </Box>
-              </Item>
+              </Grid>
             </Grid>
           </Box>
         </Box>

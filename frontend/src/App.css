@@ -1,5 +1,5 @@
 /* App Themes */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"); */
 
 /* .App-dark {
   background-color: #1a2138;
@@ -77,7 +77,7 @@
 body {
   margin: 0px;
   color: rgb(45, 55, 72);
-  font-family: "Inter", sans-serif;
+  font-family: "Inter";
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.5;
@@ -140,7 +140,7 @@ div {
 
 .css-118ie5u {
   margin: 0px;
-  font-family: "Inter", sans-serif;
+  font-family: "Inter";
   font-size: 2.375rem;
   line-height: 1.2;
   color: rgb(45, 55, 72);
@@ -154,7 +154,7 @@ div {
 
 .css-ye5b4g {
   margin: 0px;
-  font-family: "Inter", sans-serif;
+  font-family: "Inter";
   font-size: 1.125rem;
   line-height: 1.6;
   color: rgb(100, 110, 115);
@@ -179,7 +179,7 @@ div {
   appearance: none;
   text-decoration: none;
   text-transform: none;
-  font-family: Inter, sans-serif;
+  font-family: "Inter";
   font-size: 0.9375rem;
   line-height: 1.75;
   min-width: 64px;
@@ -221,7 +221,7 @@ div {
   appearance: none;
   text-decoration: none;
   text-transform: none;
-  font-family: "Inter", sans-serif;
+  font-family: "Inter";
   font-size: 0.9375rem;
   line-height: 1.75;
   min-width: 64px;
@@ -233,6 +233,10 @@ div {
     color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   border: 1px solid rgba(123, 31, 162, 0.5);
   color: rgb(123, 31, 162);
+}
+
+.css-i3pbo {
+  margin-bottom: 24px;
 }
 
 .css-1aez2l4 {
@@ -249,27 +253,30 @@ div {
   height: 100%;
   width: 100%;
   max-height: 600px;
+  max-width: 450px;
 }
 
-@media (min-width: 1200px) {
+.css-1tz8m30 > .MuiGrid-item {
+  padding-left: 32px;
+  padding-top: 32px;
+}
+
+@media only screen and (min-width: 1200px) {
   .css-iol86l {
     flex-basis: 50%;
     -webkit-box-flex: 0;
     flex-grow: 0;
     max-width: 50%;
   }
-}
-
-@media (min-width: 600px) {
-  .css-iol86l {
-    flex-basis: 100%;
+  .css-himpyl {
+    flex-basis: 50%;
     -webkit-box-flex: 0;
     flex-grow: 0;
-    max-width: 100%;
+    max-width: 50%;
   }
-}
-
-@media (min-width: 1200px) {
+  .css-118ie5u {
+    font-size: 3.75rem;
+  }
   .css-himpyl {
     flex-basis: 50%;
     -webkit-box-flex: 0;
@@ -277,68 +284,50 @@ div {
     max-width: 50%;
   }
 }
+.css-14hwaxf {
+  display: flex;
+}
 
-@media (min-width: 600px) {
+@media only screen and (min-width: 600px) {
   .css-himpyl {
     flex-basis: 100%;
     -webkit-box-flex: 0;
     flex-grow: 0;
     max-width: 100%;
   }
-}
-
-@media (min-width: 600px) {
+  .css-iol86l {
+    flex-basis: 100%;
+    -webkit-box-flex: 0;
+    flex-grow: 0;
+    max-width: 100%;
+  }
   .css-np4b2e {
     margin-top: 0px;
     margin-left: 16px;
   }
-}
-@media (min-width: 600px) {
   .css-14hwaxf {
     flex-direction: row;
     align-items: flex-start;
   }
-}
-
-@media (min-width: 600px) {
   .css-ye5b4g {
     font-size: 1.25rem;
   }
-}
-
-@media (min-width: 1200px) {
-  .css-118ie5u {
-    font-size: 3.75rem;
-  }
-}
-
-@media (min-width: 600px) {
   .css-118ie5u {
     font-size: 3.125rem;
   }
-}
-
-@media (min-width: 600px) {
-  .css-118ie5u {
-    font-size: 3.125rem;
-  }
-}
-
-@media (min-width: 1200px) {
-  .css-himpyl {
-    flex-basis: 50%;
-    -webkit-box-flex: 0;
-    flex-grow: 0;
-    max-width: 50%;
-  }
-}
-
-@media (min-width: 600px) {
   .css-himpyl {
     flex-basis: 100%;
     -webkit-box-flex: 0;
     flex-grow: 0;
     max-width: 100%;
+  }
+  .css-374h4r {
+    max-width: 720px;
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+  .css-1ybfalx {
+    height: 64px;
   }
 }
 
@@ -350,33 +339,21 @@ div {
   }
 }
 
-@media (min-width: 600px) {
-  .css-374h4r {
-    max-width: 720px;
-    padding-top: 48px;
-    padding-bottom: 48px;
-  }
-}
-
-@media (min-width: 0px) {
+@media only screen and (min-width: 0px) {
   .css-374h4r {
     padding-top: 32px;
     padding-bottom: 32px;
   }
-}
-
-@media (min-width: 600px) {
-  .css-1ybfalx {
-    height: 64px;
-  }
-}
-
-@media (min-width: 0px) {
   .css-1ybfalx {
     height: 56px;
   }
 }
 
+img {
+  max-height: 600px;
+  max-width: 550px;
+  border-radius: 20px;
+}
 /* Custom Spinner */
 /* .spinner {
   width: 64px;
