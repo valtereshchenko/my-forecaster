@@ -62,8 +62,9 @@ export default function Dashboard() {
         </div>
       ) : (
         <>
+          <div style={{ width: "100%", height: "80px" }}></div>
           <FormControl
-            sx={{ width: "200px", margin: "5px", border: "#7B1EA2" }}
+            sx={{ width: "200px", margin: "10px", border: "#7B1EA2" }}
           >
             <InputLabel id="product">Product</InputLabel>
             <Select
@@ -78,7 +79,7 @@ export default function Dashboard() {
               <MenuItem value={"keyboards"}>Keyboards</MenuItem>
             </Select>
           </FormControl>
-          <FormControl sx={{ width: "200px", margin: "5px" }}>
+          <FormControl sx={{ width: "200px", margin: "10px" }}>
             <InputLabel id="time">Time</InputLabel>
             <Select
               labelId="timeLabel"
@@ -98,7 +99,7 @@ export default function Dashboard() {
               backgroundColor: "#7B1EA2",
               color: "white",
               padding: "8px 22px",
-              margin: "12px 5px",
+              margin: "15px 10px",
               "&:hover": { backgroundColor: "#4A148C" },
             }}
           >
