@@ -12,7 +12,7 @@ export default function Home() {
     );
     const dataJ = await data.json();
     const result = dataJ.results;
-    console.log(result);
+
     let random_img = result[Math.floor(Math.random() * result.length)];
     setRes(random_img);
   };
@@ -29,7 +29,12 @@ export default function Home() {
           <Box className="css-374h4r">
             <Grid container spacing={4} className="MuiGrid-item css-1tz8m30">
               <Grid className="css-himpyl" item xs={12} md={6}>
-                <Box component="div" aos-init aos-animate data-aos="fade-right">
+                <Box
+                  component="div"
+                  aos-init="true"
+                  aos-animate="true"
+                  data-aos="fade-right"
+                >
                   <Box className="css-1qm1lh" sx={{ marginBottom: "16px" }}>
                     <span className="css-118ie5u">
                       Get insights into
@@ -68,7 +73,7 @@ export default function Home() {
                   </Box>
                 </Box>
               </Grid>
-              <Grid xs={12} md={6} className="MuiGrid-item css-iol86l">
+              <Grid item xs={12} md={6} className="MuiGrid-item css-iol86l">
                 <Box className="css-1aez2l4">
                   <Box className="home-image">
                     <img src={res.urls.regular} alt="ai 📷" />

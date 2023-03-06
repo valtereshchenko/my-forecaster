@@ -39,12 +39,15 @@ export default function Testimonials() {
     <div className="container">
       <Slider {...settings}>
         {testimonials.map((obj) => (
-          <div>
-            <Box aos-init aos-animate data-aos="fade-up" className="css-uwwqev">
+          <div key={obj.title}>
+            <Box
+              aos-init="true"
+              aos-animate="true"
+              data-aos="fade-up"
+              className="css-uwwqev"
+            >
               <Box className="tstm-box">
-                <Avatar variant="circular" sx={avatar}>
-                  {obj.avatar}
-                </Avatar>
+                <Avatar variant="circular" sx={avatar} src={obj.photo}></Avatar>
                 <Typography component="h6" gutterBottom sx={avatarTitle}>
                   {obj.title}
                 </Typography>

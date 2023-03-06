@@ -1,31 +1,37 @@
 [
     {
       "avatar": "OP",
+      "photo": "https://images.pexels.com/photos/3760809/pexels-photo-3760809.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       "title": "Simplifies lots of tasks",
       "text": "“ MFE simplifies a lot of tasks related to forecasting and demand planning. It´s very easy to implement and easy to use. ”"
     },
     {
       "avatar": "VT",
-      "title": "Fast Simple and Reliable tool",
+      "photo":"https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "title": "Fast, Simple, and Reliable tool",
       "text": "“ The platform works really well and it is a user-friendly, fast, simple and reliable tool, which provides outstanding results. ”"
     },
     {
       "avatar": "AD",
+      "photo":"https://images.pexels.com/photos/3824771/pexels-photo-3824771.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
       "title": "First-class support",
       "text": "“ The support from the team is first-class despite being on the other side of the world. ”"
     },
     {
       "avatar": "HH",
+      "photo":"https://images.pexels.com/photos/3771839/pexels-photo-3771839.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       "title": "Accurate Forecasts",
       "text": "“ After trying MFE, we have come to realize how important accurate forecasting is to us. MFE is now helping our business in Inventory Planning and Optimization. ”"
     },
     {
       "avatar": "OO",
+      "photo":"https://images.pexels.com/photos/3760260/pexels-photo-3760260.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       "title": "Exceptional Performance",
       "text": "“ We have persued a hybrid planning approach, combining sales planning by its business development team with statistical forecasting from MFE. ”"
     },
     {
       "avatar": "AM",
+      "photo":"https://images.pexels.com/photos/2381069/pexels-photo-2381069.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       "title": "Improved Invetory Management",
       "text": "“ MFE’s  intermittent demand forecasting technology  helped us to improve inventory management and consistently achieve targeted customer service levels.”"
     }
