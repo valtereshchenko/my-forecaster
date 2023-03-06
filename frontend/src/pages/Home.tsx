@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Box, Grid, Typography, Button } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import TouchRipple from "@mui/material/ButtonBase/TouchRipple";
-import Item from "@mui/material/Grid";
+import Testimonials from "../components/Testimonials";
 
 export default function Home() {
   const [res, setRes] = useState({ urls: { regular: "", small: "" } });
@@ -79,6 +79,7 @@ export default function Home() {
           </Box>
         </Box>
       </Box>
+      <Testimonials />
     </Box>
   );
 }
