@@ -104,6 +104,26 @@
   color: rgb(123, 31, 162);
 }
 
+.rights {
+  margin: 0px 0px 0.35em;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.57;
+  text-align: center;
+  color: rgb(100, 110, 115);
+}
+
+.info {
+  margin: 0px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: 1.66;
+  text-align: center;
+  color: rgb(100, 110, 115);
+}
+
 @media only screen and (min-width: 0px) {
   .top-footer {
     flex-direction: column;

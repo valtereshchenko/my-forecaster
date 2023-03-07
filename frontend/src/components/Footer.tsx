@@ -34,7 +34,16 @@ export default function Footer() {
               </Box>
             </Box>
           </Grid>
-          <Grid item className="grid-item-footer"></Grid>
+          <Grid item className="grid-item-footer">
+            <h6 className="rights">
+              © MFE. 2023, Barcelona. All rights reserved
+            </h6>
+            <p className="info">
+              When you visit or interact with our MFE WebApp, we may use cookies
+              for storing information to help provide you with a better, faster
+              and safer experience and for marketing purposes.
+            </p>
+          </Grid>
         </Grid>
       </Box>
     </Box>
