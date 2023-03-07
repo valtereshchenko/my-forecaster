@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import TouchRipple from "@mui/material/ButtonBase/TouchRipple";
 import Testimonials from "../components/Testimonials";
+import Contact from "../components/Contact";
 
 export default function Home() {
   const [res, setRes] = useState({ urls: { regular: "", small: "" } });
@@ -51,7 +52,7 @@ export default function Home() {
                     >
                       MyForecaster will give you a quick glance at your
                       company's future. Plan your staffing, manage your
-                      inventory and more wit the help of MyForecaster.
+                      inventory and more with the help of MyForecaster.
                     </Typography>
                   </Box>
                   <Box className="css-14hwaxf">
@@ -85,6 +86,7 @@ export default function Home() {
         </Box>
       </Box>
       <Testimonials />
+      <Contact />
     </Box>
   );
 }
