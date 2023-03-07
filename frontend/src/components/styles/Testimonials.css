@@ -48,6 +48,7 @@
 }
 .slick-dots {
   margin-left: 0;
+  bottom: -45px;
 }
 .slick-thumb {
   bottom: -45px;

@@ -41,8 +41,6 @@
 
 /* Header */
 .header {
-  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-  box-shadow: rgb(140 152 164 / 25%) 0px 3px 6px 0px;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -56,6 +54,11 @@
   right: 0px;
   color: rgb(255, 255, 255);
   background-color: rgb(255, 255, 255);
+}
+
+.header-hidden {
+  transition: top 0.4s ease-out;
+  visibility: hidden;
 }
 
 .header-box {
@@ -265,6 +268,9 @@ div {
   }
   .css-1ybfalx {
     height: 56px;
+  }
+  .css-uwfjn8 {
+    margin-right: 7px;
   }
 }
 

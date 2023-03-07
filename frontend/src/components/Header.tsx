@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Box,
@@ -18,10 +18,6 @@ import {
 
 import MenuIcon from "@mui/icons-material/Menu";
 
-interface Props {
-  window?: () => Window;
-}
-
 const drawerWidth = 240;
 const navItems = [
   { name: "About", link: "/" },
@@ -29,9 +25,24 @@ const navItems = [
   { name: "Quick Start", link: "/" },
 ];
 
-export default function DrawerAppBar(props: Props) {
-  const { window } = props;
+export default function DrawerAppBar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [position, setPosition] = useState(window.pageYOffset);
+  const [visible, setVisible] = useState(true);
+  useEffect(() => {
+    const handleScroll = () => {
+      let moving = window.pageYOffset;
+
+      setVisible(position > moving);
+      setPosition(moving);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  });
+
+  const cls = visible ? "header" : "header-hidden";
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -55,17 +66,8 @@ export default function DrawerAppBar(props: Props) {
     </Box>
   );
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
-
-  const styles = {
-    customizeToolbar: {
-      minHeight: 36,
-    },
-  };
-
   return (
-    <Paper component="header" elevation={1} className="header">
+    <Paper component="header" elevation={1} className={cls}>
       <CssBaseline />
       <Box className="header-box">
         <AppBar component="nav" sx={{ backgroundColor: "#303851" }}>
@@ -108,7 +110,6 @@ export default function DrawerAppBar(props: Props) {
         </AppBar>
         <Box component="nav">
           <Drawer
-            container={container}
             variant="temporary"
             open={mobileOpen}
             onClose={handleDrawerToggle}
