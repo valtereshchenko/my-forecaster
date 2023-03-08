@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./styles/Contact.css";
+import { useLoader } from "./context/LoadContext";
 import { Box, Grid, Button, Paper, TextField, Divider } from "@mui/material";
 
 export default function Contact() {
@@ -7,8 +9,51 @@ export default function Contact() {
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+  const generalContext = useLoader();
 
-  const handleSubmit = () => {};
+  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    const requestOption = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, lastname, email, message }),
+    };
+    fetch("/message/", requestOption)
+      .then((response) => {
+        if (response.status === 200) {
+          alert("A new message has been delivered successfully!");
+          setName("");
+          setEmail("");
+          setLastname("");
+          setMessage("");
+          navigate("/", { replace: true });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        if (data.status === "Error") generalContext?.setError(data.message);
+      });
+  };
+
+  // function validateEmail(email: string) {
+  //   let result = true;
+
+  //   if (!email) {
+  //     throw new Error("Email is Required");
+  //   } else {
+  //     const re =
+  //       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  //     result = re.test(String(email).toLowerCase());
+  //     if (!result) {
+  //       throw new Error("Please entere a valid email address.");
+  //     } else {
+  //       setEmail(email);
+  //     }
+  //   }
+  //   return result;
+  // }
 
   //styles
   const submitBtn = {

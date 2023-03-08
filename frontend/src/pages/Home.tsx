@@ -56,17 +56,15 @@ export default function Home() {
                     </Typography>
                   </Box>
                   <Box className="css-14hwaxf">
-                    <a
-                      className="css-uwfjn8"
-                      href="/start"
-                      tabIndex={0}
-                      target="blank"
-                    >
+                    <a className="css-uwfjn8" href="/dashboard">
                       Quick Start{" "}
                       <TouchRipple className="css-w0pj6f"></TouchRipple>
                     </a>
                     <Box className="css-np4b2e">
-                      <a className="css-1x0ry33" href="/docs">
+                      <a
+                        className="css-1x0ry33"
+                        href="https://github.com/valtereshchenko/my-forecaster"
+                      >
                         View documentation{" "}
                         <TouchRipple className="css-w0pj6f"></TouchRipple>
                       </a>

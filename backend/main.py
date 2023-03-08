@@ -30,4 +30,4 @@ def shutdown_db_client():
     app.mongodb_client.close()
 
 
-app.include_router(product_router, tags=["products"], prefix="/products")
+app.include_router(product_router, tags=["products"])

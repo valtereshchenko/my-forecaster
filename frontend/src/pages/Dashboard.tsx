@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Chart from "../components/Chart";
 import {
   FormControl,
@@ -6,6 +6,7 @@ import {
   Select,
   MenuItem,
   Button,
+  Box,
 } from "@mui/material";
 
 // const ProducContext = React.createContext({
@@ -14,23 +15,29 @@ import {
 // });
 
 export default function Dashboard() {
+  const [products, setProducts] = useState([0]);
+  const [fetching, setFetching] = useState(true);
   const [product, setProduct] = useState("");
   const [time, setTime] = useState("");
   const [prediction, setPrediction] = useState([{}]);
   const [actual, setActual] = useState([{}]);
   const [loading, setLoading] = useState(false);
 
-  //TODO use useEffect to fetch all the products from the DB and add them to the list
-  // const fetchTodos = async () => {
-  //     const response = await fetch("http://localhost:8000/products")
-  //     const products = await response.json()
-  //     setProducts(products.data)
-  //   }
-  // }
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setFetching(true);
+      const response = await fetch("/products/");
+      const products = await response.json();
+
+      setProducts(products);
+      setFetching(false);
+    };
+    fetchProducts();
+  }, []);
 
   async function handlePredict() {
     setLoading(true);
-    const response = await fetch(`/products/prediction/${product}/${time}`);
+    const response = await fetch(`/prediction/${product}/${time}`);
     const data = await response.json();
 
     let resForecast: any = [{ id: "forecast", data: [] }];
@@ -57,9 +64,13 @@ export default function Dashboard() {
   return (
     <>
       {loading ? (
-        <div className="loader-container">
-          {/* <div className="spinner"></div> */}
-        </div>
+        <>
+          <div className="loader-container">
+            <p className="loader-text">
+              Your forecast is being processed. It might take a minute...
+            </p>
+          </div>
+        </>
       ) : (
         <>
           <div style={{ width: "100%", height: "80px" }}></div>
@@ -74,23 +85,39 @@ export default function Dashboard() {
               label="Product"
               onChange={(e) => setProduct(e.target.value)}
             >
-              <MenuItem value={"laptop"}>Laptop</MenuItem>
-              <MenuItem value={"paper"}>Paper</MenuItem>
-              <MenuItem value={"keyboards"}>Keyboards</MenuItem>
+              {fetching ? (
+                <MenuItem value={"loading"}>...</MenuItem>
+              ) : (
+                products.map((obj) => (
+                  <MenuItem
+                    key={obj}
+                    value={`${obj}`}
+                    sx={{ fontFamily: "Inter" }}
+                  >
+                    {obj}
+                  </MenuItem>
+                ))
+              )}
             </Select>
           </FormControl>
           <FormControl sx={{ width: "200px", margin: "10px" }}>
-            <InputLabel id="time">Time</InputLabel>
+            <InputLabel id="time">Forecast Horizon</InputLabel>
             <Select
               labelId="timeLabel"
               id="timeId"
               value={time}
-              label="Time"
+              label="Forecast Horizon"
               onChange={(e) => setTime(e.target.value)}
             >
-              <MenuItem value={30}>Thirty Days</MenuItem>
-              <MenuItem value={60}>Sixty Days</MenuItem>
-              <MenuItem value={90}>Ninety Days</MenuItem>
+              <MenuItem value={30} sx={{ fontFamily: "Inter" }}>
+                thirty days
+              </MenuItem>
+              <MenuItem value={60} sx={{ fontFamily: "Inter" }}>
+                sixty days
+              </MenuItem>
+              <MenuItem value={90} sx={{ fontFamily: "Inter" }}>
+                ninety days
+              </MenuItem>
             </Select>
           </FormControl>
           <Button
@@ -103,13 +130,23 @@ export default function Dashboard() {
               "&:hover": { backgroundColor: "#4A148C" },
             }}
           >
-            Predict
+            Forecast
           </Button>
           {Object.keys(prediction[0]).length > 0 &&
           Object.keys(actual[0]).length > 0 ? (
             <Chart actual={actual} prediction={prediction}></Chart>
           ) : (
-            <p>Select a product and a time frame</p>
+            <>
+              <p style={{ marginLeft: "15px" }}>
+                Select a product and the time frame you want to forecast its
+                sales for.
+              </p>
+              <Box className="default-dashboard-msg">
+                <h2>
+                  The future of your business is just a few clicks away...
+                </h2>
+              </Box>
+            </>
           )}
         </>
       )}
