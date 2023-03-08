@@ -7,6 +7,8 @@ import {
   MenuItem,
   Button,
   Box,
+  Autocomplete,
+  TextField,
 } from "@mui/material";
 
 // const ProducContext = React.createContext({
@@ -74,32 +76,23 @@ export default function Dashboard() {
       ) : (
         <>
           <div style={{ width: "100%", height: "80px" }}></div>
-          <FormControl
-            sx={{ width: "200px", margin: "10px", border: "#7B1EA2" }}
-          >
-            <InputLabel id="product">Product</InputLabel>
-            <Select
-              labelId="productLabel"
-              id="productId"
-              value={product}
-              label="Product"
-              onChange={(e) => setProduct(e.target.value)}
-            >
-              {fetching ? (
-                <MenuItem value={"loading"}>...</MenuItem>
-              ) : (
-                products.map((obj) => (
-                  <MenuItem
-                    key={obj}
-                    value={`${obj}`}
-                    sx={{ fontFamily: "Inter" }}
-                  >
-                    {obj}
-                  </MenuItem>
-                ))
+          {fetching ? (
+            <TextField sx={{ width: "200px", margin: "10px" }} value="..." />
+          ) : (
+            <Autocomplete
+              disablePortal
+              id="products"
+              options={products}
+              sx={{ width: "200px", display: "inline-flex" }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Product"
+                  sx={{ margin: "10px" }}
+                />
               )}
-            </Select>
-          </FormControl>
+            />
+          )}
           <FormControl sx={{ width: "200px", margin: "10px" }}>
             <InputLabel id="time">Forecast Horizon</InputLabel>
             <Select
