@@ -7,19 +7,11 @@ const line1Color = "#2E3648"; //dark theme"#FFD200";
 //   prediction: { data: [{}]; id: string }[];
 // };
 
-// const getRequiredDateFormat = (timeStamp: any, format = "MM-DD-YYYY") => {
-//   return moment(timeStamp).format(format);
-// };
-
 export default function LineChart({ actual, prediction }: any) {
-  //   let str = JSON.stringify(actual[0].data, (k, v) => (v === 0 ? null : v));
-  //   let resulting_data = JSON.parse(str);
-
-  //   actual[0].data = resulting_data;
   let sales: any = [{ id: "actual", data: {} }];
   let forecast: any = [{ id: "forecast", data: {} }];
   forecast[0].data = prediction;
-  console.log("Actual", actual);
+
   sales[0].data = actual;
 
   return (
@@ -46,7 +38,7 @@ export default function LineChart({ actual, prediction }: any) {
         </div>
 
         <div className="secondGraph">
-          <SecondGraph prediction={sales} actual={forecast} />
+          <SecondGraph prediction={forecast} actual={sales} />
         </div>
       </div>
     </div>
@@ -55,7 +47,7 @@ export default function LineChart({ actual, prediction }: any) {
 
 const SecondGraph = ({ prediction, actual }: any) => {
   let data1And2 = actual.concat(prediction);
-  console.log("data12", data1And2);
+
   return (
     <ResponsiveLine
       data={data1And2}

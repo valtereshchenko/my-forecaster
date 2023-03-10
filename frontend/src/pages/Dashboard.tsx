@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import LineChart from "../components/LineChart";
 
@@ -11,7 +11,6 @@ export default function Dashboard() {
       setFetching(true);
       const response = await fetch("/forecasts/");
       const data = await response.json();
-      console.log("data", data);
 
       setForecasts(data);
       setFetching(false);

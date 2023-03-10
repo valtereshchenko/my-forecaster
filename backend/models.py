@@ -1,7 +1,8 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 from bson import ObjectId
-from typing import Optional, Sequence, Union
-from datetime import datetime, date
+from typing import Optional, Sequence
+from datetime import date
+import numpy as np
 
 
 class PyObjectId(ObjectId):
@@ -114,6 +115,14 @@ class PredictionModel(BaseModel):
     forecast_lower: int = Field(...)
     forecast_upper: int = Field(...)
 
+    # Custom validator here
+    @validator('actual', pre=True)
+    def allow_none(cls, v):
+        if v is None or np.isnan(v):
+            return None
+        else:
+            return v
+
     class Config:
         allow_population_by_field_name = True
         arbitrary_types_allowed = True
@@ -122,7 +131,7 @@ class PredictionModel(BaseModel):
             "example": {
                 "_id": "63f747bcb2ac35288903a1c1",
                 "saleDate": '2020-01-01',
-                "actual": "333",
+                "actual": "NaN",
                 "forecast": "256.3",
                 "forecast_lower": "256.3",
                 "forecast_upper": "333",
