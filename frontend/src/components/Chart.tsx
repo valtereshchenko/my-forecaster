@@ -14,7 +14,9 @@ const line1Color = "#2E3648"; //dark theme"#FFD200";
 export default function Chart({ actual, prediction }: any) {
   let str = JSON.stringify(actual[0].data, (k, v) => (v === 0 ? null : v));
   let resulting_data = JSON.parse(str);
+
   actual[0].data = resulting_data;
+
   return (
     <div className="App">
       <div className="wrapper">

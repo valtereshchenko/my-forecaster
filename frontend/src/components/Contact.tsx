@@ -33,7 +33,7 @@ export default function Contact() {
       })
       .then((data) => {
         console.log(data);
-        if (data.status === "Error") generalContext?.setError(data.message);
+        if (data.status_code === 400) generalContext?.setError(data.message);
       });
   };
 

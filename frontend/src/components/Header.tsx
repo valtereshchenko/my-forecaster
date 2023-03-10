@@ -22,7 +22,7 @@ const drawerWidth = 240;
 const navItems = [
   { name: "About", link: "/" },
   { name: "Dashboard", link: "/dashboard/" },
-  { name: "Quick Start", link: "/" },
+  { name: "Quick Start", link: "/quickstart/" },
 ];
 
 export default function DrawerAppBar() {

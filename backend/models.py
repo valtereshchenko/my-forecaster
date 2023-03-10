@@ -43,6 +43,26 @@ class ModelOut(BaseModel):
     data: Optional[ModelModel]
 
 
+class ForecastsModel(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    data: dict
+    name: str
+    date: str
+
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+            "example": {
+                "_id": "63f747bcb2ac35288903a1c1",
+                "data": {"name": "Laptop Sales Forecasts", "forecast": []},
+                "name": "Laptop Sales Forecasts",
+                "date": "2023-01-01"
+            }
+        }
+
+
 class SalesModel(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     keyboards: float = Field(...)  # convert to int as these are unit sales
