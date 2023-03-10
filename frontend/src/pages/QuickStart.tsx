@@ -107,8 +107,6 @@ export default function QuickStart() {
       });
   }
 
-  console.log("actual", actual);
-
   return (
     <>
       {loading ? (
@@ -172,8 +170,8 @@ export default function QuickStart() {
           >
             Forecast
           </Button>
-          {Object.keys(prediction[0]).length > 0 &&
-          Object.keys(actual[0]).length > 0 ? (
+          {Object.keys(prediction[0]).length > 1 &&
+          Object.keys(actual[0]).length > 1 ? (
             <>
               <Chart actual={actual} prediction={prediction}></Chart>
               <Button

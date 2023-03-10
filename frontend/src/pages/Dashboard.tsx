@@ -1,6 +1,6 @@
-import { Box, TextField } from "@mui/material";
+import { Box } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import Chart from "../components/Chart";
+import LineChart from "../components/LineChart";
 
 export default function Dashboard() {
   const [forecasts, setForecasts] = useState([0]);
@@ -19,8 +19,6 @@ export default function Dashboard() {
     fetchForecasts();
   }, []);
 
-  console.log("forecasts1", forecasts);
-
   return (
     <>
       <Box sx={{ height: "65px" }}></Box>
@@ -30,8 +28,16 @@ export default function Dashboard() {
         forecasts.map((obj: any) => (
           <>
             <Box>{obj.name}</Box>
-            {/* <TextField>{obj.forecast}</TextField> */}
-            <Chart actual={obj.sales} prediction={obj.forecast}></Chart>
+            <Box>{obj.date}</Box>
+
+            {obj.data ? (
+              <LineChart
+                actual={obj.data.sales}
+                prediction={obj.data.forecast}
+              ></LineChart>
+            ) : (
+              <Box>Loading...</Box>
+            )}
           </>
         ))
       )}
