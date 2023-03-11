@@ -174,18 +174,26 @@ export default function QuickStart() {
           Object.keys(actual[0]).length > 1 ? (
             <>
               <Chart actual={actual} prediction={prediction}></Chart>
-              <Button
-                onClick={handleClickOpen}
+              <Box
                 sx={{
-                  backgroundColor: "#7B1EA2",
-                  color: "white",
-                  padding: "8px 22px",
-                  margin: "15px 10px",
-                  "&:hover": { backgroundColor: "#4A148C" },
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                Save to Dashboard
-              </Button>
+                <Button
+                  onClick={handleClickOpen}
+                  sx={{
+                    backgroundColor: "#7B1EA2",
+                    color: "white",
+                    padding: "8px 22px",
+                    marginBottom: "15px",
+                    "&:hover": { backgroundColor: "#4A148C" },
+                  }}
+                >
+                  Save to Dashboard
+                </Button>
+              </Box>
               <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Add to Dashboard</DialogTitle>
                 <DialogContent>

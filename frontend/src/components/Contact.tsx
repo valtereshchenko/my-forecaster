@@ -2,7 +2,18 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles/Contact.css";
 import { useLoader } from "./context/LoadContext";
-import { Box, Grid, Button, Paper, TextField, Divider } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Button,
+  Paper,
+  TextField,
+  Divider,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
+} from "@mui/material";
 
 export default function Contact() {
   const [name, setName] = useState("");
@@ -11,6 +22,7 @@ export default function Contact() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const generalContext = useLoader();
+  const [open, setOpen] = useState(false);
 
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -22,7 +34,7 @@ export default function Contact() {
     fetch("/message/", requestOption)
       .then((response) => {
         if (response.status === 200) {
-          alert("A new message has been delivered successfully!");
+          setOpen(true);
           setName("");
           setEmail("");
           setLastname("");
@@ -35,6 +47,10 @@ export default function Contact() {
         console.log(data);
         if (data.status_code === 400) generalContext?.setError(data.message);
       });
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   // function validateEmail(email: string) {
@@ -238,6 +254,18 @@ export default function Contact() {
                       Submit
                     </Button>
                   </Grid>
+                  <Dialog open={open} onClose={handleClose}>
+                    <DialogContent>
+                      <DialogContentText>
+                        You message has been sent to us successfully.
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions sx={{ justifyContent: "center" }}>
+                      <Button sx={{ color: "#7B1FA2" }} onClick={handleClose}>
+                        X
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                   <Grid item xs={12} className="css-15j76c0">
                     <Divider></Divider>
                   </Grid>

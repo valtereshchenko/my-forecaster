@@ -1,4 +1,4 @@
-import { Box, TextField } from "@mui/material";
+import { Box, TextField, Grid } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import LineChart from "../components/LineChart";
 
@@ -24,21 +24,35 @@ export default function Dashboard() {
       {forecasts.length === 0 ? (
         <Box>Loading your forecasts...</Box>
       ) : (
-        forecasts.map((obj: any) => (
-          <>
-            <Box>{obj.name}</Box>
-            <Box>{obj.date}</Box>
+        <Grid
+          //   xs={12}
+          //   sm={12}
+          //   md={8}
+          //   lg={8}
+          container
+          rowSpacing={1}
+          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+        >
+          {forecasts.map((obj: any) => (
+            <>
+              <Grid item xs={12}>
+                <Box key={obj.name}> {obj.name}</Box>
 
-            {obj.data ? (
-              <LineChart
-                actual={obj.data.sales}
-                prediction={obj.data.forecast}
-              ></LineChart>
-            ) : (
-              <Box>Loading...</Box>
-            )}
-          </>
-        ))
+                {obj.data ? (
+                  <Box height="450px" width="450" m="-20px 0 0 0">
+                    <LineChart
+                      key={obj["_id"]}
+                      actual={obj.data.sales}
+                      prediction={obj.data.forecast}
+                    ></LineChart>
+                  </Box>
+                ) : (
+                  <Box>Loading...</Box>
+                )}
+              </Grid>
+            </>
+          ))}
+        </Grid>
       )}
     </>
   );

@@ -27,7 +27,7 @@ export default function Chart({ actual, prediction }: any) {
               legendPosition: "start",
             }}
             theme={getColoredAxis(line1Color)}
-            margin={{ top: 50, right: 50, bottom: 70, left: 55 }}
+            margin={{ top: 50, right: 50, bottom: 60, left: 55 }}
           />
         </div>
 
