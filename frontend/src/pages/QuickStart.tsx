@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Chart from "../components/Chart";
+import FileUploader from "../components/FileUploader";
 import {
   FormControl,
   InputLabel,
@@ -231,6 +232,7 @@ export default function QuickStart() {
                   The future of your business is just a few clicks away...
                 </h2>
               </Box>
+              <FileUploader></FileUploader>
             </>
           )}
         </>

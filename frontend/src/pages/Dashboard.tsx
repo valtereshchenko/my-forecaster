@@ -20,7 +20,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Box sx={{ height: "65px" }}></Box>
+      <Box sx={{ height: "60px" }}></Box>
       {forecasts.length === 0 ? (
         <Box>Loading your forecasts...</Box>
       ) : (

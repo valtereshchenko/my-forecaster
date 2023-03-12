@@ -14,6 +14,7 @@ import {
   Typography,
   Button,
   Paper,
+  useMediaQuery,
 } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
@@ -29,6 +30,15 @@ export default function DrawerAppBar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [position, setPosition] = useState(window.pageYOffset);
   const [visible, setVisible] = useState(true);
+
+  const toolBarHeight = {
+    minHeight: "57px",
+    margin: "0 15px",
+    "@media(minWidth: 600px": {
+      minHeight: "57px",
+    },
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       let moving = window.pageYOffset;
@@ -71,7 +81,7 @@ export default function DrawerAppBar() {
       <CssBaseline />
       <Box className="header-box">
         <AppBar component="nav" sx={{ backgroundColor: "#303851" }}>
-          <Toolbar disableGutters>
+          <Toolbar disableGutters sx={toolBarHeight}>
             <IconButton
               color="inherit"
               aria-label="open drawer"
