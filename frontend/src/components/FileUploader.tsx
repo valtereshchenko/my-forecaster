@@ -93,8 +93,9 @@ export default function FileUploader() {
               sx={{
                 backgroundColor: "#7B1EA2",
                 color: "white",
-                padding: "8px 22px",
+                padding: "5px 15px",
                 margin: "15px 10px",
+                fontSize: "0.75rem",
                 "&:hover": { backgroundColor: "#4A148C" },
               }}
             >
@@ -109,6 +110,7 @@ export default function FileUploader() {
                 before the uploading:
               </DialogContentText>
               <TextField
+                required
                 autoFocus
                 margin="dense"
                 id="name"
@@ -121,6 +123,7 @@ export default function FileUploader() {
                 }}
               />
               <TextField
+                required
                 autoFocus
                 margin="dense"
                 id="time"
@@ -133,6 +136,7 @@ export default function FileUploader() {
                 }}
               />
               <TextField
+                required
                 autoFocus
                 margin="dense"
                 id="fileName"
