@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body, Request, Response, HTTPException, status
+from fastapi import APIRouter, Body, Request, Response, HTTPException, File,  status
 from fastapi.encoders import jsonable_encoder
 from bson import ObjectId
 from typing import List
@@ -6,6 +6,7 @@ from models import SalesModel, PredictionModel, ForecastsModel
 import pandas as pd
 from greykite_model import predict
 from datetime import date
+from data_processing.processing_pipeline import analyse_response
 
 
 router = APIRouter()
@@ -66,7 +67,6 @@ def find_sales(product: str, time: int, request: Request) -> pd.DataFrame:
 
     prediction = predict(products, time, product)
 
-    # get the prediction in a tabular format
     prediction_to_insert = prediction.to_dict(orient="records")
 
     if prediction_to_insert is not None:
@@ -99,7 +99,7 @@ def save_forecast(request: Request, data: dict = Body(...)):
              response_description="Add Message",
              status_code=200, responses={200: {"description": "Message has been delivered successfully!"}, 400: {"decription": "Oooops, there has been an error!"}}
              )
-def addMessage(request: Request, data: dict = Body(...)):
+def add_message(request: Request, data: dict = Body(...)):
     data = jsonable_encoder(data)
 
     new_message = request.app.database.messages.insert_one(
@@ -111,6 +111,50 @@ def addMessage(request: Request, data: dict = Body(...)):
     if added_message is not None:
         return {"status_code": 200,
                 "message": "A new message has been delivered successfully!"}
+    else:
+        return {"status_code": 400,
+                "message": "Ooops! Something went wrong."}
+
+
+@router.post("/uploadfile", response_description="File uploaded",
+             status_code=200, responses={200: {"description": "Your file has been uploaded successfully!"}, 400: {"decription": "Oooops, something went wrong!"}})
+def upload_file(request: Request, data: dict = Body(...)):
+    # https://stackoverflow.com/questions/70617121/how-to-upload-a-csv-file-in-fastapi-and-convert-it-into-json
+
+    data = jsonable_encoder(data)
+
+    new_file = request.app.database.uploaded_data.insert_one(data)
+
+    created_record = list(request.app.database.uploaded_data.find(
+        {"_id": new_file.inserted_id}
+    ))
+
+    df = pd.DataFrame([i for i in data['file']])
+
+    # run data anayze pipeline on the obtained df, insert the resulting analysis to the mongoDB and return the analysis to display to the user
+    # config = {
+    #     'response_variable': data['target'],
+    #     'temporal_variable': data['timeField'],
+    #     'freq': data['frequency'],
+    # }
+
+    # data_analyzed = analyse_response(df, config) #runs quite slow so use the ready analysis for the demo
+    data_analyzed = pd.read_csv(
+        './data/printer_paper_analyzed.csv', index_col=0)
+
+    analysis_to_insert = data_analyzed.to_dict(orient="records")
+
+    new_analysis = request.app.database.analyzed_data.insert_one(
+        {'analysis': analysis_to_insert})
+
+    created_analysis = list(request.app.database.analyzed_data.find(
+        {'_id': new_analysis.inserted_id}
+    ))
+
+    if (created_record is not None):
+        return {"status_code": 200,
+                "message": "A new file has been uploaded successfully!",
+                "analysis": analysis_to_insert}
     else:
         return {"status_code": 400,
                 "message": "Ooops! Something went wrong."}
