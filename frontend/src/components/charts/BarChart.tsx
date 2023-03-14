@@ -1,45 +1,11 @@
 import React from "react";
 import { ResponsiveBar } from "@nivo/bar";
-import { mockBarData } from "../components/data/mockData";
+import { mockBarData } from "../data/mockData";
 
 const BarChart = ({ isDashboard = false }) => {
   return (
     <ResponsiveBar
       data={mockBarData}
-      theme={{
-        axis: {
-          domain: {
-            line: {
-              stroke: "#e0e0e0",
-            },
-          },
-          legend: {
-            text: {
-              fill: "#e0e0e0",
-            },
-          },
-          ticks: {
-            line: {
-              stroke: "#e0e0e0",
-              strokeWidth: 1,
-            },
-            text: {
-              fill: "#e0e0e0",
-            },
-          },
-        },
-        legends: {
-          text: {
-            fill: "#e0e0e0",
-          },
-        },
-        tooltip: {
-          container: {
-            background: "#1F2A40",
-            color: "#e0e0e0",
-          },
-        },
-      }}
       keys={["hot dog", "burger", "sandwich", "kebab", "fries", "donut"]}
       indexBy="country"
       margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
@@ -48,7 +14,7 @@ const BarChart = ({ isDashboard = false }) => {
       valueScale={{ type: "linear" }}
       indexScale={{ type: "band", round: true }}
       valueFormat=" <-"
-      colors={{ scheme: "category10" }}
+      colors={{ scheme: "purpleRed_green" }}
       defs={[
         {
           id: "dots",
@@ -137,7 +103,7 @@ const BarChart = ({ isDashboard = false }) => {
         },
       ]}
       role="application"
-      ariaLabel="Nivo bar chart demo"
+      ariaLabel="Nivo bar chart"
       barAriaLabel={function (e) {
         return e.id + ": " + e.formattedValue + " in country: " + e.indexValue;
       }}

@@ -14,6 +14,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Paper,
+  Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -106,6 +108,14 @@ export default function QuickStart() {
         if (data.status_code === 404) console.log(data.detail);
       });
   }
+
+  //styling
+  const paraphs = {
+    fontFamily: "Inter, sans-serif",
+    padding: "5px",
+    color: "#727B80",
+    fontWeight: "500",
+  };
 
   return (
     <>
@@ -222,10 +232,28 @@ export default function QuickStart() {
             </>
           ) : (
             <>
-              <p style={{ marginLeft: "15px" }}>
-                Select a product and the time frame you want to forecast its
-                sales for.
-              </p>
+              <Paper
+                sx={{
+                  fontFamily: "Inter, sans-serif",
+                  width: "550px",
+                  marginLeft: "15px",
+                  padding: "10px",
+                }}
+                elevation={1}
+              >
+                <Typography sx={paraphs}>
+                  MFE is designed to graphically share with you the future
+                  forecast of the selected variable/product for the selected
+                  time period.
+                </Typography>
+                <Typography sx={paraphs}>
+                  We have pre-loaded some data for you, so go ahead and select a
+                  product and the "forecast horizon" - timeframe you want MFE to
+                  produce the forecast for, hit the FORECAST button and see the
+                  magic happen.
+                </Typography>
+              </Paper>
+
               <Box className="default-dashboard-msg">
                 <h2>
                   The future of your business is just a few clicks away...

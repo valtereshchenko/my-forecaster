@@ -1,6 +1,6 @@
 import { Box, TextField, Grid, Typography, Divider } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import LineChart from "../components/LineChart";
+import LineChart from "../components/charts/LineChart";
 import FileUploader from "../components/FileUploader";
 import "../components/styles/Dashboard.css";
 

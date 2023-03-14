@@ -2,7 +2,7 @@ from fastapi import APIRouter, Body, Request, Response, HTTPException, File,  st
 from fastapi.encoders import jsonable_encoder
 from bson import ObjectId
 from typing import List
-from models import SalesModel, PredictionModel, ForecastsModel
+from models import SalesModel, PredictionModel, ForecastsModel, PyObjectId
 import pandas as pd
 from greykite_model import predict
 from datetime import date
@@ -158,3 +158,21 @@ def upload_file(request: Request, data: dict = Body(...)):
     else:
         return {"status_code": 400,
                 "message": "Ooops! Something went wrong."}
+
+
+@router.delete('/dashboard/delete', response_description="Chart deleted")
+def delete_chart(request: Request, data=Body(...)):
+
+    id = PyObjectId(data['_id'])
+
+    delete_result = request.app.database.saved_charts.delete_one(
+        {'_id': id})
+
+    print('result', delete_result.deleted_count)
+
+    if delete_result.deleted_count == 1:
+        return {"status_code": 200,
+                "message": "The Chart has been deleted successfully!"}
+
+    raise HTTPException(
+        status_code=404, detail=f"Chart not found in the Database")

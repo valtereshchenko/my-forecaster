@@ -5,19 +5,20 @@ import {
   Typography,
   useTheme,
   useMediaQuery,
+  Divider,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import mockTransactions from "../components/data/mockTransactions.json";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
+import DeleteIcon from "@mui/icons-material/Delete";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
-import LineChart from "../components/LineChart";
-import GeographyChart from "../components/GeographyChart";
-import BarChart from "../components/BarChart";
-import StatBox from "../components/StatBox";
-import ProgressCircle from "../components/ProgressCircle";
+import LineChart from "../components/charts/LineChart";
+import GeographyChart from "../components/charts/GeographyChart";
+import BarChart from "../components/charts/BarChart";
+import StatBox from "../components/charts/StatBox";
+import ProgressCircle from "../components/charts/ProgressCircle";
 import "../components/styles/Dashboard.css";
 import { useEffect, useState } from "react";
 
@@ -29,16 +30,31 @@ const Dashboard = () => {
   const [fetching, setFetching] = useState(false);
 
   useEffect(() => {
-    const fetchForecasts = async () => {
-      setFetching(true);
-      const response = await fetch("/forecasts/");
-      const data = await response.json();
-
-      setForecasts(data);
-      setFetching(false);
-    };
     fetchForecasts();
   }, []);
+
+  const fetchForecasts = async () => {
+    setFetching(true);
+    const response = await fetch("/forecasts/");
+    const data = await response.json();
+
+    setForecasts(data);
+    setFetching(false);
+  };
+
+  function handleDelete(id: any) {
+    const requestOptions = {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ _id: id }),
+    };
+    fetch("/dashboard/delete", requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        fetchForecasts();
+      });
+  }
 
   //styling
   const fileUploader = {
@@ -71,8 +87,34 @@ const Dashboard = () => {
         <Box sx={upperContainer}>
           <Box sx={fileUploader}>
             <Box className="title">
-              <h2 className="h2-title">DASHBOARD</h2>
-              <p className="h5-paraph">Welcome to your dashboard!</p>
+              <Typography
+                variant="h2"
+                sx={{
+                  fontFamily: '"Inter", sans-serif',
+                  fontWeight: "700",
+                  fontSize: "2.5rem",
+                  opacity: "0.6",
+                }}
+              >
+                DASHBOARD
+              </Typography>
+              <Divider
+                variant="middle"
+                sx={{ width: "100%", margin: "0 0 10px 0" }}
+              />
+              <Typography
+                variant="h4"
+                sx={{
+                  fontFamily: '"Inter", sans-serif',
+                  fontWeight: "400",
+                  fontSize: "1.5rem",
+                  color: "#8C43AF",
+                  fontStyle: "italic",
+                  marginTon: "7px",
+                }}
+              >
+                Welcome to your dashboard!
+              </Typography>
             </Box>
           </Box>
         </Box>
@@ -95,7 +137,7 @@ const Dashboard = () => {
               subtitle="Emails Sent"
               progress={0.75}
               increase="+14%"
-              icon={<EmailIcon sx={{ color: "#3da58a", fontSize: "26px" }} />}
+              icon={<EmailIcon sx={{ color: "#303851", fontSize: "26px" }} />}
             />
           </Box>
         </Grid>
@@ -115,7 +157,7 @@ const Dashboard = () => {
               progress={0.5}
               increase="+21%"
               icon={
-                <PointOfSaleIcon sx={{ color: "#3da58a", fontSize: "26px" }} />
+                <PointOfSaleIcon sx={{ color: "#303851", fontSize: "26px" }} />
               }
             />
           </Box>
@@ -136,7 +178,7 @@ const Dashboard = () => {
               progress={0.3}
               increase="+5%"
               icon={
-                <PersonAddIcon sx={{ color: "#3da58a", fontSize: "26px" }} />
+                <PersonAddIcon sx={{ color: "#303851", fontSize: "26px" }} />
               }
             />
           </Box>
@@ -156,7 +198,7 @@ const Dashboard = () => {
               subtitle="Traffic Received"
               progress={0.8}
               increase="+43%"
-              icon={<TrafficIcon sx={{ color: "#3da58a", fontSize: "26px" }} />}
+              icon={<TrafficIcon sx={{ color: "#303851", fontSize: "26px" }} />}
             />
           </Box>
         </Grid>
@@ -171,7 +213,17 @@ const Dashboard = () => {
             backgroundColor: "#F7F9FC",
           }}
         >
-          <h2 className="h2-title">Sales Overview</h2>
+          <Typography
+            variant="h5"
+            sx={{
+              fontFamily: '"Inter", sans-serif',
+              color: "#303851",
+              fontWeight: "400",
+              padding: "10px",
+            }}
+          >
+            Sales Overview
+          </Typography>
         </Box>
         <Grid xs={12} sm={12} md={4}>
           <Box sx={{ backgroundColor: "white", p: "30px" }}>
@@ -185,7 +237,7 @@ const Dashboard = () => {
               mt="25px"
             >
               <ProgressCircle size={125} />
-              <Typography variant="h5" color="#4cceac" sx={{ mt: "15px" }}>
+              <Typography variant="h5" color="#77209D" sx={{ mt: "15px" }}>
                 $48,352 revenue generated
               </Typography>
               <Typography>
@@ -213,16 +265,38 @@ const Dashboard = () => {
             <Typography
               variant="h5"
               fontWeight="600"
-              sx={{ marginBottom: "15px" }}
+              sx={{ marginBottom: "15px", fontFamily: '"Inter", sans-serif' }}
             >
-              Geography Based Sales
+              Geography-Based Sales
             </Typography>
             <Box height="200px">
               <GeographyChart isDashboard={true} />
             </Box>
           </Box>
         </Grid>
-        <Box>Saved Forecasts</Box>
+        <Box
+          width="100%"
+          sx={{
+            height: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "10px 0",
+            display: "flex",
+            backgroundColor: "#F7F9FC",
+          }}
+        >
+          <Typography
+            variant="h5"
+            sx={{
+              fontFamily: '"Inter", sans-serif',
+              color: "#303851",
+              fontWeight: "400",
+              padding: "10px",
+            }}
+          >
+            Saved Forecasts
+          </Typography>
+        </Box>
         <Grid
           xs={12}
           sm={12}
@@ -237,7 +311,14 @@ const Dashboard = () => {
           ) : (
             forecasts.map((obj: any, index: number) =>
               obj.data ? (
-                <Grid xs={12} sm={12} md={6} className="graph-item">
+                <Grid
+                  key={`${obj["_id"]}`}
+                  xs={12}
+                  sm={12}
+                  md={6}
+                  className="graph-item"
+                  sx={{ backgroundColor: "#F7F9FC" }}
+                >
                   <Box sx={{ backgroundColor: "white", height: "450px" }}>
                     <Box
                       mt="25px"
@@ -249,10 +330,27 @@ const Dashboard = () => {
                       <Box>
                         <h2 className="h2-title">{obj.name}</h2>
                       </Box>
+
                       <Box>
                         <IconButton>
                           <DownloadOutlinedIcon
-                            sx={{ fontSize: "26px", color: "#4cceac" }}
+                            sx={{ fontSize: "26px", color: "#77209D" }}
+                          />
+                        </IconButton>
+                      </Box>
+                      <Box>
+                        <IconButton
+                          onClick={() => {
+                            handleDelete(obj["_id"]);
+                          }}
+                        >
+                          <Typography
+                            sx={{ fontFamily: '"Inter", sans-serif' }}
+                          >
+                            delete chart
+                          </Typography>
+                          <DeleteIcon
+                            sx={{ fontSize: "26px", color: "#FED201" }}
                           />
                         </IconButton>
                       </Box>

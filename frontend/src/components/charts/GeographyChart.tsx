@@ -1,53 +1,16 @@
 import React from "react";
 import { ResponsiveChoropleth } from "@nivo/geo";
-import { useTheme } from "@mui/material";
 
-import { geoFeatures } from "../components/data/mockGeoFeatures";
-import { mockGeographyData } from "../components/data/mockData";
+import { geoFeatures } from "../data/mockGeoFeatures";
+import { mockGeographyData } from "../data/mockData";
 
 const GeographyChart = ({ isDashboard = false }) => {
-  const theme = useTheme();
-
   return (
     <ResponsiveChoropleth
-      theme={{
-        axis: {
-          domain: {
-            line: {
-              stroke: "#e6e6e6",
-            },
-          },
-          legend: {
-            text: {
-              fill: "#e6e6e6",
-            },
-          },
-          ticks: {
-            line: {
-              stroke: "#e6e6e6",
-              strokeWidth: 1,
-            },
-            text: {
-              fill: "#e6e6e6",
-            },
-          },
-        },
-        legends: {
-          text: {
-            fill: "#e6e6e6",
-          },
-        },
-        tooltip: {
-          container: {
-            background: "#F2F0F0",
-            color: "#e6e6e6",
-          },
-        },
-      }}
       data={mockGeographyData}
       features={geoFeatures.features}
       margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-      colors="nivo"
+      colors="PuOr"
       domain={[0, 1000000]}
       unknownColor="#666666"
       label="properties.name"
@@ -79,7 +42,7 @@ const GeographyChart = ({ isDashboard = false }) => {
                   {
                     on: "hover",
                     style: {
-                      itemTextColor: "#97E3D5",
+                      itemTextColor: "#FFE792",
                       itemOpacity: 1,
                     },
                   },

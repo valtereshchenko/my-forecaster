@@ -17,12 +17,22 @@ const StatBox = ({
   increase,
   icon,
 }: StatBoxProps) => {
+  //styles
+
+  const titles = {
+    fontFamily: "Inter, sans-serif",
+    fontSize: "1,2rem",
+  };
+
   return (
     <Box width="100%" m="0 30px" p="12px 0">
       <Box display="flex" justifyContent="space-between">
         <Box>
           {icon}
-          <Typography variant="h4" fontWeight="bold" sx={{ color: "#e0e0e0" }}>
+          <Typography
+            fontWeight="bold"
+            sx={{ color: "#303851", fontSize: "1.5rem" }}
+          >
             {title}
           </Typography>
         </Box>
@@ -31,10 +41,16 @@ const StatBox = ({
         </Box>
       </Box>
       <Box display="flex" justifyContent="space-between" mt="2px">
-        <Typography variant="h5" sx={{ color: "#4cceac" }}>
+        <Typography
+          sx={{
+            color: "#BA90CE",
+            fontFamily: "Inter, sans-serif",
+            fontSize: "1.2rem",
+          }}
+        >
           {subtitle}
         </Typography>
-        <Typography variant="h5" fontStyle="italic" sx={{ color: "#3da58a" }}>
+        <Typography variant="h5" fontStyle="italic" sx={{ color: "#77209D" }}>
           {increase}
         </Typography>
       </Box>
