@@ -15,8 +15,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="/dashboard/" element={<Dashboard />}></Route>
-        <Route path="/dashboard2/" element={<Dashboard2 />}></Route>
+        <Route path="/dashboard/" element={<Dashboard2 />}></Route>
         <Route path="/quickstart/" element={<QuickStart />}></Route>
       </Routes>
       <Divider />
