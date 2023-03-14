@@ -9,6 +9,13 @@ import {
   DialogContentText,
   DialogTitle,
   TextField,
+  TableContainer,
+  Table,
+  TableHead,
+  Paper,
+  TableRow,
+  TableCell,
+  TableBody,
 } from "@mui/material";
 import axios from "axios";
 import Papa from "papaparse";
@@ -18,7 +25,17 @@ export default function FileUploader() {
   const [open, setOpen] = useState(false);
   const [timeField, setTimefield] = useState("");
   const [target, setTarget] = useState("");
+  const [frequency, setFrequency] = useState("");
   const [fileName, setFileName] = useState("");
+  const [analysis, setAnalysis] = useState({
+    name: "",
+    ABC: "",
+    Cov: "",
+    "Demand Type": "",
+    "Life Cycle Class": "",
+    XYZ: "",
+  });
+  const [showAnalysis, setShowAnalysis] = useState(false);
 
   const handleChange = (e: any) => {
     //shoud be :React.ChangeEvent<HTMLInputElement> type
@@ -48,24 +65,28 @@ export default function FileUploader() {
 
     async function fetchData() {
       if (file) {
-        console.log("FILE", file);
         console.log("file 0", file[0]);
 
         const requestOptions = {
           method: "POST",
-          url: "/uploadfile/",
+          url: "/uploadfile",
           headers: { "Content-Type": "application/json" },
           data: JSON.stringify({
-            file: file,
-            date_col: timeField,
-            target: target,
-            name: fileName,
+            file,
+            timeField,
+            target,
+            frequency,
+            fileName,
           }),
         };
 
         await axios(requestOptions)
           .then((response) => {
             console.log(response);
+            if (response.status === 200) {
+              setShowAnalysis(true);
+              setAnalysis(response.data.analysis[0]);
+            }
           })
           .catch((error) => {
             console.log(error);
@@ -127,12 +148,25 @@ export default function FileUploader() {
                 autoFocus
                 margin="dense"
                 id="time"
-                label="The date variable name"
+                label="The date / timestemp variable name"
                 type="text"
                 fullWidth
                 variant="standard"
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   setTimefield(event.target.value);
+                }}
+              />
+              <TextField
+                required
+                autoFocus
+                margin="dense"
+                id="fileFreq"
+                label="What is the frequency of the time stamps in your data? (Daily, weekly or monthly)"
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  setFrequency(event.target.value);
                 }}
               />
               <TextField
@@ -154,6 +188,34 @@ export default function FileUploader() {
               <Button onClick={(e) => handleSubmit(e)}>Save</Button>
             </DialogActions>
           </Dialog>
+          {showAnalysis ? (
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="right">Product Name</TableCell>
+                    <TableCell align="right">ABC</TableCell>
+                    <TableCell align="right">XYZ</TableCell>
+                    <TableCell align="right">CoV</TableCell>
+                    <TableCell align="right">Demand Type</TableCell>
+                    <TableCell align="right">Life Cycle Class</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableCell align="right">{analysis.name}</TableCell>
+                  <TableCell align="right">{analysis.ABC}</TableCell>
+                  <TableCell align="right">{analysis.XYZ}</TableCell>
+                  <TableCell align="right">{analysis.Cov}</TableCell>
+                  <TableCell align="right">{analysis["Demand Type"]}</TableCell>
+                  <TableCell align="right">
+                    {analysis["Life Cycle Class"]}
+                  </TableCell>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : (
+            <p>No data uploaded yet.</p>
+          )}
         </Grid>
       </Grid>
     </Box>
