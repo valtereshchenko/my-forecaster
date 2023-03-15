@@ -1,0 +1,7 @@
+,name,Life Cycle Class,ABC,XYZ,Cov,Demand Type
+0,burger,in scope,A,X,0.0076225302563557,smooth
+0,cheeseburger,NPI,C,Z,1.0076225302563557,erratic
+0,fries,in scope,C,Z,1.1052934346456458,lumpy
+0,nuggets,in scope,A,X,0.00346225302563557, smooth
+0,ice cream,in scope,B,Y,0.9276225302563557, intermittent
+0,coke,in scope,A,Y,0.4076225302563557,smooth

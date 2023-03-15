@@ -59,10 +59,9 @@ img {
   justify-content: center;
   align-items: center;
   margin-top: -30px;
-  position: fixed;
   background: white url("https://media.giphy.com/media/No3Q2COl8SEnu/giphy.gif")
     center no-repeat;
-  z-index: 1;
+  z-index: 1000;
 }
 
 /* Header */

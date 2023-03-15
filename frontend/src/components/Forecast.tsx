@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import Chart from "../components/Chart";
+import React, { useState, useEffect, SetStateAction, Dispatch } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FormControl,
   InputLabel,
@@ -16,22 +16,35 @@ import {
   DialogTitle,
   Paper,
   Typography,
+  Avatar,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import Chart from "./Chart";
 
-// const ProducContext = React.createContext({
-//   producs: [],
-//   fetchProducts: () => {},
-// });
+type ForecastProps = {
+  fetching: boolean;
+  setFetching: Dispatch<SetStateAction<boolean>>;
+  url: string;
+  data: boolean;
+  setData: Dispatch<SetStateAction<boolean>>;
+  collection: string;
+  dataId: string;
+};
 
-export default function QuickStart() {
+export default function Forecast({
+  fetching,
+  setFetching,
+  url,
+  data,
+  setData,
+  collection,
+  dataId,
+}: ForecastProps) {
   const [products, setProducts] = useState([0]);
-  const [fetching, setFetching] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState("");
   const [time, setTime] = useState("");
   const [prediction, setPrediction] = useState([{ data: [] }]);
   const [actual, setActual] = useState([{ data: [] }]);
-  const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -39,18 +52,23 @@ export default function QuickStart() {
   useEffect(() => {
     const fetchProducts = async () => {
       setFetching(true);
-      const response = await fetch("/products/");
+      console.log("URL", url);
+      const response = await fetch(`${url}`);
       const products = await response.json();
 
       setProducts(products);
       setFetching(false);
+      setData(true);
     };
     fetchProducts();
-  }, []);
+  }, [url]);
 
   async function handlePredict() {
     setLoading(true);
-    const response = await fetch(`/prediction/${product}/${time}`);
+    console.log("collection", collection);
+    const response = await fetch(
+      `/prediction/${product}/${time}/${collection}/${dataId}`
+    );
 
     //TODO throw an error when no prediction is returned
     const data = await response.json();
@@ -75,14 +93,6 @@ export default function QuickStart() {
 
     return prediction;
   }
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   function saveChart() {
     // save the current prediction and pass it to the Dashboard page
@@ -109,27 +119,42 @@ export default function QuickStart() {
       });
   }
 
-  //styling
-  const paraphs = {
-    fontFamily: "Inter, sans-serif",
-    padding: "5px",
-    color: "#727B80",
-    fontWeight: "500",
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
     <>
       {loading ? (
-        <>
-          <div className="loader-container">
-            <p className="loader-text">
-              Your forecast is being processed. It might take a minute...
-            </p>
-          </div>
-        </>
+        <div className="loader-container">
+          <p className="loader-text">
+            Your forecast is being processed. It might take a minute...
+          </p>
+        </div>
       ) : (
         <>
-          <div style={{ width: "100%", height: "80px" }}></div>
+          <Box sx={{ display: "flex", margin: "15px 0 0 15px" }}>
+            <Typography
+              variant="h5"
+              sx={{
+                fontFamily: '"Inter", sans-serif',
+                padding: "5px",
+                color: "#303851",
+              }}
+            >
+              Get Forecasting!
+            </Typography>
+            <Avatar
+              alt="click"
+              sx={{ marginLeft: "10px", backgroundColor: "#F2EBF6" }}
+            >
+              <img alt="click" src={require("./click.jpg")}></img>
+            </Avatar>
+          </Box>
           {fetching ? (
             <TextField sx={{ width: "200px", margin: "10px" }} value="..." />
           ) : (
@@ -180,9 +205,10 @@ export default function QuickStart() {
           >
             Forecast
           </Button>
+          <Box sx={{ height: "60px" }} />
           {Object.keys(prediction[0]).length > 1 &&
           Object.keys(actual[0]).length > 1 ? (
-            <>
+            <Box sx={{ backgroundColor: "white" }}>
               <Chart actual={actual} prediction={prediction}></Chart>
               <Box
                 sx={{
@@ -229,51 +255,9 @@ export default function QuickStart() {
                   <Button onClick={saveChart}>Save</Button>
                 </DialogActions>
               </Dialog>
-            </>
+            </Box>
           ) : (
-            <>
-              <Paper
-                sx={{
-                  fontFamily: "Inter, sans-serif",
-                  width: "550px",
-                  marginLeft: "15px",
-                  padding: "10px",
-                }}
-                elevation={1}
-              >
-                <Typography sx={paraphs}>
-                  MFE is designed to graphically share with you the future
-                  forecast of the selected variable/product for the selected
-                  time period.
-                </Typography>
-                <Typography sx={paraphs}>
-                  We have pre-loaded some data for you, so go ahead and select a
-                  product and the "forecast horizon" - timeframe you want MFE to
-                  produce the forecast for, hit the FORECAST button and see the
-                  magic happen.
-                </Typography>
-              </Paper>
-
-              <Button
-                href="/fileuploader/"
-                sx={{
-                  backgroundColor: "white",
-                  color: "#77209D",
-                  padding: "8px 22px",
-                  margin: "15px",
-                  border: "1px solid #77209D",
-                  "&:hover": { backgroundColor: "#F7F9FC" },
-                }}
-              >
-                Try MFE with my own data!
-              </Button>
-
-              <Box className="default-dashboard-msg">
-                <h2>
-                  The future of your business is just a few clicks away...
-                </h2>
-              </Box>
-            </>
+            <Box sx={{ backgroundColor: "white" }} />
           )}
         </>
       )}

@@ -21,6 +21,7 @@ import StatBox from "../components/charts/StatBox";
 import ProgressCircle from "../components/charts/ProgressCircle";
 import "../components/styles/Dashboard.css";
 import { useEffect, useState } from "react";
+import SubHeader from "../components/SubHeader";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -85,38 +86,7 @@ const Dashboard = () => {
         m="70px 0 0 0"
       >
         <Box sx={upperContainer}>
-          <Box sx={fileUploader}>
-            <Box className="title">
-              <Typography
-                variant="h2"
-                sx={{
-                  fontFamily: '"Inter", sans-serif',
-                  fontWeight: "700",
-                  fontSize: "2.5rem",
-                  opacity: "0.6",
-                }}
-              >
-                DASHBOARD
-              </Typography>
-              <Divider
-                variant="middle"
-                sx={{ width: "100%", margin: "0 0 10px 0" }}
-              />
-              <Typography
-                variant="h4"
-                sx={{
-                  fontFamily: '"Inter", sans-serif',
-                  fontWeight: "400",
-                  fontSize: "1.5rem",
-                  color: "#8C43AF",
-                  fontStyle: "italic",
-                  marginTon: "7px",
-                }}
-              >
-                Welcome to your dashboard!
-              </Typography>
-            </Box>
-          </Box>
+          <SubHeader title="DASHBOARD" subTitle="Welcome to your dashboard!" />
         </Box>
       </Box>
 

@@ -53,7 +53,6 @@ export default function Dashboard() {
               </Box>
               <Box sx={{ display: "block" }}>
                 <p>Upload your data here:</p>
-                <FileUploader />
               </Box>
             </Box>
           </Box>
