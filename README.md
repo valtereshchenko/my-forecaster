@@ -4,11 +4,12 @@ final project TK &amp;&amp; AllWomen Bootcamp
 
 ## Main functionalities
 
-- :hourglass_flowing_sand: Display information about MyForecaster (how it works? what can it do for you?) & Display some graphs from Unsplash API.
+- :white_check_mark: Display information about MyForecaster (how it works? what can it do for you?) & Fetch & render decorative images from Unsplash API.
+- :white_check_mark: Display a dropdown with products and forecast horizon options for user to choose from. Visualize the data with the options selected.
+- :white_check_mark: Users can add/remove graphs from their personal Dashboard
+- :white_check_mark: Users can upload their own data (in a csv format) get an analysis of the last and forecast variables of that data
 - :hourglass_flowing_sand: Display a Login && Registration Pop-up on the Home screen.
 - :hourglass_flowing_sand: Registration/Login flow (with email - password verification)
-- :white_check_mark: Display a dropdown with products and forecast horizon options for user to choose from. Visualize the data with the options selected.
-- :hourglass_flowing_sand: Users can add/remove graphs from their personal Dashboard
 
 ## Installation
 
@@ -23,6 +24,17 @@ Backend: `pip install -r requirements.txt`
 Frontend: `npm start`
 </br>
 Backend: `python -m uvicorn main:app --reload`
+
+## Testing MFE with external data
+
+If you want to test the MFE with an external data (not the one preloaded to the MongoDB), you can use the csv file from the `test-data` folder.
+</br>
+Once you have selected the `food_sales.csv` in the `Explore & Forecast` screen, you will have to specify the following details in the pop-up form:
+
+- The target variable name: "quantity"
+- The date/timestamp variable name: "saleDate"
+- The data frequency: "daily"
+- The name for your file: _you can choose any name you want_
 
 ## API
 

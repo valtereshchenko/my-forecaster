@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import Header from "./components/Header";
 import Explore from "./pages/Explore";
-import Dashboard2 from "./pages/Dashboard2";
+import Dashboard from "./pages/Dashboard";
 import QuickStart from "./pages/QuickStart";
 import Home from "./pages/Home";
 import Footer from "./components/Footer";
@@ -15,7 +15,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="/dashboard/" element={<Dashboard2 />}></Route>
+        <Route path="/dashboard/" element={<Dashboard />}></Route>
         <Route path="/quickstart/" element={<QuickStart />}></Route>
         <Route path="/fileuploader/" element={<Explore />}></Route>
       </Routes>

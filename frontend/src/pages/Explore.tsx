@@ -61,7 +61,7 @@ export default function Explore() {
           handleFetch={updateFetching}
           data={data}
           setData={setData}
-          url={`/explore/${id}`}
+          url={`/explore/uploaded_data/${id}`}
           dataId={id}
           collection="uploaded_data"
         />

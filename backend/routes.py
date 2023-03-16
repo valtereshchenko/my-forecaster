@@ -109,14 +109,14 @@ def find_and_predict(product: str, time: int, collection: str, id: str, request:
                         detail=f"Sale not found")
 
 
-@router.get('/explore/{id}', response_description='The newly uploaded data was fetched successfully')
-def get_uploaded_data(request: Request, id: str):
+@router.get('/explore/{collection}/{id}', response_description='The newly uploaded data was fetched successfully')
+def get_uploaded_data(request: Request, id: str, collection: str):
     """
     Get the product names for the uploaded by the user file
     """
 
     id = PyObjectId(id)
-    data = request.app.database.uploaded_data.find_one(
+    data = request.app.database[f'{collection}'].find_one(
         {'_id': id})
 
     products = list(data['file'][0].keys())

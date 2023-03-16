@@ -14,7 +14,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Paper,
   Typography,
   Avatar,
 } from "@mui/material";
@@ -28,6 +27,7 @@ type ForecastProps = {
   setData: Dispatch<SetStateAction<boolean>>;
   collection: string;
   dataId: string;
+  handleActive?: (value: boolean) => void;
 };
 
 export default function Forecast({
@@ -38,6 +38,7 @@ export default function Forecast({
   setData,
   collection,
   dataId,
+  handleActive,
 }: ForecastProps) {
   const [products, setProducts] = useState([0]);
   const [loading, setLoading] = useState(false);
@@ -61,11 +62,12 @@ export default function Forecast({
       setData(true);
     };
     fetchProducts();
-  }, [url, handleFetch, setData]);
+  }, [url, handleFetch, setData]); //when 'handleFetch' and 'setData' added to the array, calls useEffect 6 times
 
   async function handlePredict() {
     setLoading(true);
-    console.log("collection", collection);
+
+    if (handleActive) handleActive(true);
     const response = await fetch(
       `/prediction/${product}/${time}/${collection}/${dataId}`
     );
