@@ -24,6 +24,9 @@ export default function Search() {
         // setLoading(false);
         setResults(data);
         console.log(results);
+      })
+      .catch((e) => {
+        console.log(e);
       });
   };
 
@@ -38,7 +41,7 @@ export default function Search() {
         sx={{ width: 300 }}
         onInputChange={handleChange}
         renderInput={(params) => {
-          return <TextField {...params} label="My Movie" />;
+          return <TextField {...params} label="My Forecast" />;
         }}
       />
     </>

@@ -23,6 +23,7 @@ export default function Contact() {
   const navigate = useNavigate();
   const generalContext = useLoader();
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -45,12 +46,22 @@ export default function Contact() {
       })
       .then((data) => {
         console.log(data);
-        if (data.status_code === 400) generalContext?.setError(data.message);
+        if (data.status_code === 400) {
+          setError(true);
+          generalContext?.setError(data.message);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
       });
   };
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleError = () => {
+    setError(false);
   };
 
   // function validateEmail(email: string) {
@@ -263,6 +274,19 @@ export default function Contact() {
                     <DialogActions sx={{ justifyContent: "center" }}>
                       <Button sx={{ color: "#7B1FA2" }} onClick={handleClose}>
                         X
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                  <Dialog open={error} onClose={handleError}>
+                    <DialogContent>
+                      <DialogContentText>
+                        Ooops! We could not send your message this time. Please
+                        try again later.
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions sx={{ justifyContent: "center" }}>
+                      <Button sx={{ color: "#7B1FA2" }} onClick={handleError}>
+                        OK
                       </Button>
                     </DialogActions>
                   </Dialog>
