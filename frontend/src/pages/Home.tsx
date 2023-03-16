@@ -19,7 +19,11 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchRequest();
+    try {
+      fetchRequest();
+    } catch (e) {
+      console.log(e);
+    }
   }, []);
 
   return (

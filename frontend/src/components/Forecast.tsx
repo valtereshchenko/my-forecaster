@@ -48,6 +48,8 @@ export default function Forecast({
   const [actual, setActual] = useState([{ data: [] }]);
   const [name, setName] = useState("");
   const [open, setOpen] = useState(false);
+  const [errorOpen, setErrorOpen] = useState(false);
+  const [predictError, setPredictError] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,39 +63,54 @@ export default function Forecast({
       handleFetch(false);
       setData(true);
     };
-    fetchProducts();
-  }, [url, handleFetch, setData]); //when 'handleFetch' and 'setData' added to the array, calls useEffect 6 times
+    try {
+      fetchProducts();
+    } catch (e) {
+      console.log(e);
+    }
+  }, [url, handleFetch, setData]);
 
   async function handlePredict() {
     setLoading(true);
 
     if (handleActive) handleActive(true);
+
     const response = await fetch(
       `/prediction/${product}/${time}/${collection}/${dataId}`
     );
 
-    //TODO throw an error when no prediction is returned
-    const data = await response.json();
+    try {
+      if (response.status === 200) {
+        const data = await response.json();
 
-    let resForecast: any = [{ id: "forecast", data: [] }];
-    data.forEach((element: { saleDate: any; forecast: any; _id: any }) => {
-      resForecast.forEach((object: any) => {
-        object.data.push({ x: element.saleDate, y: element.forecast });
-      });
-    });
+        //TODO move this part to the backend
+        let resForecast: any = [{ id: "forecast", data: [] }];
+        data.forEach((element: { saleDate: any; forecast: any; _id: any }) => {
+          resForecast.forEach((object: any) => {
+            object.data.push({ x: element.saleDate, y: element.forecast });
+          });
+        });
 
-    let resActual: any = [{ id: "actual", data: [] }];
-    data.forEach((element: { saleDate: any; actual: any }) => {
-      resActual.forEach((object: any) => {
-        object.data.push({ x: element.saleDate, y: element.actual });
-      });
-    });
+        let resActual: any = [{ id: "actual", data: [] }];
+        data.forEach((element: { saleDate: any; actual: any }) => {
+          resActual.forEach((object: any) => {
+            object.data.push({ x: element.saleDate, y: element.actual });
+          });
+        });
 
-    setActual(resActual);
-    setPrediction(resForecast);
-    setLoading(false);
+        setActual(resActual);
+        setPrediction(resForecast);
+        setLoading(false);
 
-    return prediction;
+        return prediction;
+      } else {
+        setLoading(false);
+        console.log(response);
+        setPredictError(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function saveChart() {
@@ -113,11 +130,17 @@ export default function Forecast({
       .then((response) => {
         if (response.status === 201) {
           navigate("/dashboard/", { replace: true });
+        } else if (response.status === 404) {
+          // oh no! we could not save the chart! Let's let user know
+          console.log(response);
+          setErrorOpen(true);
         }
         return response.json();
       })
-      .then((data) => {
-        if (data.status_code === 404) console.log(data.detail);
+      .catch((error) => {
+        console.log(error);
+        // oh no! we could not save the chart! Let's let user know
+        setErrorOpen(true);
       });
   }
 
@@ -127,6 +150,14 @@ export default function Forecast({
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleCloseError = () => {
+    setErrorOpen(false);
+  };
+
+  const handleClosePredictError = () => {
+    setPredictError(false);
   };
 
   return (
@@ -207,6 +238,22 @@ export default function Forecast({
           >
             Forecast
           </Button>
+          <Dialog open={predictError} onClose={handleClosePredictError}>
+            <DialogContent>
+              <DialogContentText>
+                Ooops! Something went wrong! Please try to run your forecast
+                again later.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions sx={{ justifyContent: "center" }}>
+              <Button
+                sx={{ color: "#7B1FA2" }}
+                onClick={handleClosePredictError}
+              >
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
           <Box sx={{ height: "60px" }} />
           {Object.keys(prediction[0]).length > 1 &&
           Object.keys(actual[0]).length > 1 ? (
@@ -275,6 +322,19 @@ export default function Forecast({
                 <DialogActions>
                   <Button onClick={handleClose}>Cancel</Button>
                   <Button onClick={saveChart}>Save</Button>
+                </DialogActions>
+              </Dialog>
+              <Dialog open={errorOpen} onClose={handleCloseError}>
+                <DialogContent>
+                  <DialogContentText>
+                    Sorry, your forecast could not be saved. Please try again
+                    later.
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions sx={{ justifyContent: "center" }}>
+                  <Button sx={{ color: "#7B1FA2" }} onClick={handleCloseError}>
+                    OK
+                  </Button>
                 </DialogActions>
               </Dialog>
             </Box>

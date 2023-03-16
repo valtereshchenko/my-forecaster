@@ -29,7 +29,11 @@ const Dashboard = () => {
   const [fetching, setFetching] = useState(false);
 
   useEffect(() => {
-    fetchForecasts();
+    try {
+      fetchForecasts();
+    } catch (e) {
+      console.log(e);
+    }
   }, []);
 
   const fetchForecasts = async () => {
@@ -52,6 +56,9 @@ const Dashboard = () => {
       .then((data) => {
         console.log(data);
         fetchForecasts();
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }
 
