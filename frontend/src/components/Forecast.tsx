@@ -22,7 +22,7 @@ import Chart from "./Chart";
 
 type ForecastProps = {
   fetching: boolean;
-  setFetching: Dispatch<SetStateAction<boolean>>;
+  handleFetch: any;
   url: string;
   data: boolean;
   setData: Dispatch<SetStateAction<boolean>>;
@@ -32,7 +32,7 @@ type ForecastProps = {
 
 export default function Forecast({
   fetching,
-  setFetching,
+  handleFetch,
   url,
   data,
   setData,
@@ -51,17 +51,17 @@ export default function Forecast({
 
   useEffect(() => {
     const fetchProducts = async () => {
-      setFetching(true);
+      handleFetch(true);
       console.log("URL", url);
       const response = await fetch(`${url}`);
       const products = await response.json();
 
       setProducts(products);
-      setFetching(false);
+      handleFetch(false);
       setData(true);
     };
     fetchProducts();
-  }, [url]);
+  }, [url, handleFetch, setData]);
 
   async function handlePredict() {
     setLoading(true);
@@ -209,6 +209,26 @@ export default function Forecast({
           {Object.keys(prediction[0]).length > 1 &&
           Object.keys(actual[0]).length > 1 ? (
             <Box sx={{ backgroundColor: "white" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "10px 0 -30px 0",
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontFamily: '"Inter", sans-serif',
+                    padding: "10px",
+                    fontStyle: "italic",
+                    fontWeight: "200",
+                  }}
+                >
+                  {product} sales forecast
+                </Typography>
+              </Box>
               <Chart actual={actual} prediction={prediction}></Chart>
               <Box
                 sx={{

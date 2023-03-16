@@ -21,6 +21,10 @@ export default function Explore() {
     backgroundColor: "white", //"#F7F9FC",
   };
 
+  const updateFetching = (value: boolean) => {
+    setFetching(value);
+  };
+
   return (
     <Box sx={{ backgroundColor: "#F7F9FC", width: "100%" }}>
       <Box sx={{ height: "65px" }} />
@@ -54,7 +58,7 @@ export default function Explore() {
       ) : (
         <Forecast
           fetching={fetching}
-          setFetching={setFetching}
+          handleFetch={updateFetching}
           data={data}
           setData={setData}
           url={`/explore/${id}`}
