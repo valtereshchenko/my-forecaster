@@ -111,7 +111,7 @@ export default function Forecast({
 
     fetch("/prediction/save/", requestOption)
       .then((response) => {
-        if (response.status === 200) {
+        if (response.status === 201) {
           navigate("/dashboard/", { replace: true });
         }
         return response.json();

@@ -56,7 +56,7 @@ export default function Home() {
                     </Typography>
                   </Box>
                   <Box className="css-14hwaxf">
-                    <a className="css-uwfjn8" href="/dashboard">
+                    <a className="css-uwfjn8" href="/quickstart/">
                       Quick Start{" "}
                       <TouchRipple className="css-w0pj6f"></TouchRipple>
                     </a>

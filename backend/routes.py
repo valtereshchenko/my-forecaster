@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Body, Request, Response, HTTPException, status
+from fastapi import APIRouter, Body, Request, HTTPException, status
+from fastapi.responses import Response, JSONResponse
 from fastapi.encoders import jsonable_encoder
 from typing import List
-from models import PredictionModel, ForecastsModel, PyObjectId
+from models import PredictionModel, ForecastsModel, PyObjectId, ChartModel
 import pandas as pd
 from greykite_model import predict
 from datetime import date
@@ -55,7 +56,7 @@ def find_and_predict(product: str, time: int, collection: str, id: str, request:
         return prediction_to_insert  # the response is a list of objects
 
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                        detail=f"Sale not found")
+                        detail=f"Something went wrong! The forecast could not be made.")
 
 
 @router.get('/explore/{collection}/{id}', response_description='The newly uploaded data was fetched successfully')
@@ -78,25 +79,25 @@ def get_uploaded_data(request: Request, id: str, collection: str):
                 "message": "Oops! No products were found."}
 
 
-@ router.post("/prediction/save", response_description="Save selected forecast to the DB", status_code=200, responses={200: {"description": "The forecast has been added successfully!"}, 400: {"decription": "Oooops, there has been an error!"}}
-              )
+@ router.post("/prediction/save", response_description="Save selected forecast to the DB", response_model=ChartModel)
 def save_forecast(request: Request, data: dict = Body(...)):
     """
+    Received the new forecast data as a JSON in a post request
     Saves the newly created forecast to the DB
     """
     new_data = request.app.database.saved_charts.insert_one(
         {"data": data, "name": data['name'], "date": date.today().strftime("%m/%d/%Y")})
 
-    saved_prediction = list(request.app.database.saved_charts.find(
-        {"_id": new_data.inserted_id}
+    saved_prediction = list(request.app.database.saved_charts.find_one(
+        {"_id": new_data.inserted_id}, {'_id': 0}
     ))
 
     if saved_prediction is not None:
-        return {"status_code": 200,
-                "message": "The forecast have been saved successfully"}
-    else:
-        HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                      detail=f"Prediction could not be saved!")
+        return JSONResponse(status_code=status.HTTP_201_CREATED, content=saved_prediction)
+        # return {"status_code": 200,
+        #         "message": "The forecast have been saved successfully"}
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                        detail=f"Prediction could not be saved!")
 
 
 @ router.post("/message/",
