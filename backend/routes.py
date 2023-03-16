@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body, Request, Response, HTTPException, File,  status
+from fastapi import APIRouter, Body, Request, Response, HTTPException, status
 from fastapi.encoders import jsonable_encoder
 from typing import List
 from models import SalesModel, PredictionModel, ForecastsModel, PyObjectId
@@ -20,6 +20,7 @@ def list_sales(request: Request):
 
 @router.get("/forecasts", response_description="Get all saved forecasts", response_model=List[ForecastsModel])
 def get_forecasts(request: Request):
+    """Retrieves all the forecast charts saved by the user from the DB"""
     forecasts = list(request.app.database["saved_charts"].find())
 
     if forecasts is not None:
@@ -29,17 +30,9 @@ def get_forecasts(request: Request):
                         detail=f"Forecasts not found")
 
 
-# @router.get("/{id}", response_description="Get a single sale by id", response_model=SalesModel)
-# def find_sales(id: str, request: Request) -> SalesModel:
-#     sale = request.app.database.sales_new.find_one({'_id': PyObjectId(id)})
-#     if sale is not None:
-#         return sale
-
-#     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-#                         detail=f"Sale with ID {id} not found")
-
 @router.get("/products", response_description="List all the products")
 def get_products(request: Request):
+    """Gets the names of all the products from one collection in the DB to than display in the drop-down"""
     products = list(request.app.database.sales_new.find_one().keys())
     products = products[1:-1]
 
@@ -52,6 +45,10 @@ def get_products(request: Request):
 
 @router.get("/prediction/{product}/{time}", response_description="Get all sales by column name", response_model=List[PredictionModel])
 def find_sales(product: str, time: int, request: Request) -> pd.DataFrame:
+    """
+    Gets the product selected by the user 
+    and run the greykite model for the specified forecast horizon (time)
+    """
     some_product = []
     dates = []
     ids = []
@@ -77,6 +74,10 @@ def find_sales(product: str, time: int, request: Request) -> pd.DataFrame:
 
 @router.get("/prediction/{product}/{time}/{collection}/{id}", response_description="Get all sales by column name", response_model=List[PredictionModel])
 def find_and_predict(product: str, time: int, collection: str, id: str, request: Request) -> pd.DataFrame:
+    """
+    Gets the data from the uploaded by the user file, by the id, 
+    runs the forecast on the specified by the user product and for the specified forecast horizon
+    """
     some_product = []
     dates = []
     ids = []
@@ -110,6 +111,9 @@ def find_and_predict(product: str, time: int, collection: str, id: str, request:
 
 @router.get('/explore/{id}', response_description='The newly uploaded data was fetched successfully')
 def get_uploaded_data(request: Request, id: str):
+    """
+    Get the product names for the uploaded by the user file
+    """
 
     id = PyObjectId(id)
     data = request.app.database.uploaded_data.find_one(
@@ -128,7 +132,9 @@ def get_uploaded_data(request: Request, id: str):
 @ router.post("/prediction/save", response_description="Save selected forecast to the DB", status_code=200, responses={200: {"description": "The forecast has been added successfully!"}, 400: {"decription": "Oooops, there has been an error!"}}
               )
 def save_forecast(request: Request, data: dict = Body(...)):
-
+    """
+    Saves the newly created forecast to the DB
+    """
     new_data = request.app.database.saved_charts.insert_one(
         {"data": data, "name": data['name'], "date": date.today().strftime("%m/%d/%Y")})
 
@@ -149,6 +155,9 @@ def save_forecast(request: Request, data: dict = Body(...)):
               status_code=200, responses={200: {"description": "Message has been delivered successfully!"}, 400: {"decription": "Oooops, there has been an error!"}}
               )
 def add_message(request: Request, data: dict = Body(...)):
+    """
+    Saved the user message from the contact form to the DB
+    """
     data = jsonable_encoder(data)
 
     new_message = request.app.database.messages.insert_one(
@@ -168,7 +177,10 @@ def add_message(request: Request, data: dict = Body(...)):
 @ router.post("/uploadfile", response_description="File uploaded",
               status_code=200, responses={200: {"description": "Your file has been uploaded successfully!"}, 400: {"decription": "Oooops, something went wrong!"}})
 def upload_file(request: Request, data: dict = Body(...)):
-    # https://stackoverflow.com/questions/70617121/how-to-upload-a-csv-file-in-fastapi-and-convert-it-into-json
+    """
+    Uploads the file selected by the user to the DB uploaded_data colletion
+    Runs the analysis and saves it to the 'analyzed_data' collection in the DB
+    """
 
     data = jsonable_encoder(data)
 
@@ -180,16 +192,15 @@ def upload_file(request: Request, data: dict = Body(...)):
 
     id = str(new_file.inserted_id)
 
-    df = pd.DataFrame([i for i in data['file']])
-
     # run data anayze pipeline on the obtained df, insert the resulting analysis to the mongoDB and return the analysis to display to the user
+    # df = pd.DataFrame([i for i in data['file']])
     # config = {
     #     'response_variable': data['target'],
     #     'temporal_variable': data['timeField'],
     #     'freq': data['frequency'],
     # }
-
     # data_analyzed = analyse_response(df, config) #runs quite slow so use the ready analysis for the demo
+
     data_analyzed = pd.read_csv(
         './data/data_analyzed.csv', index_col=0)
 
@@ -214,6 +225,9 @@ def upload_file(request: Request, data: dict = Body(...)):
 
 @ router.delete('/dashboard/delete', response_description="Chart deleted")
 def delete_chart(request: Request, data=Body(...)):
+    """
+    Deletes the saved forecast chart from the DB
+    """
 
     id = PyObjectId(data['_id'])
 

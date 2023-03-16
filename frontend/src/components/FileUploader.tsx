@@ -162,7 +162,7 @@ export default function FileUploader({
                 autoFocus
                 margin="dense"
                 id="name"
-                label="The taget variable name (what would you like to frecast)"
+                label="The taget variable name (what would you like to forecast)"
                 type="text"
                 fullWidth
                 variant="standard"
@@ -175,7 +175,7 @@ export default function FileUploader({
                 autoFocus
                 margin="dense"
                 id="time"
-                label="The date / timestemp variable name"
+                label="The date / timestamp variable name"
                 type="text"
                 fullWidth
                 variant="standard"
@@ -188,7 +188,7 @@ export default function FileUploader({
                 autoFocus
                 margin="dense"
                 id="fileFreq"
-                label="What is the frequency of the time stamps in your data? (Daily, weekly or monthly)"
+                label="What is the frequency of the timestamps in your data? (Daily, weekly or monthly)"
                 type="text"
                 fullWidth
                 variant="standard"
