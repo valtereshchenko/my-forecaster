@@ -1,110 +1,359 @@
-import React, { useState } from "react";
-import Chart from "../components/Chart";
 import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Button,
+  Box,
+  IconButton,
+  Typography,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
+import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+import EmailIcon from "@mui/icons-material/Email";
+import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
+import DeleteIcon from "@mui/icons-material/Delete";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import TrafficIcon from "@mui/icons-material/Traffic";
+import LineChart from "../components/charts/LineChart";
+import GeographyChart from "../components/charts/GeographyChart";
+import BarChart from "../components/charts/BarChart";
+import StatBox from "../components/charts/StatBox";
+import ProgressCircle from "../components/charts/ProgressCircle";
+import "../components/styles/Dashboard.css";
+import { useEffect, useState } from "react";
+import SubHeader from "../components/SubHeader";
 
-const ProducContext = React.createContext({
-  producs: [],
-  fetchProducts: () => {},
-});
+const Dashboard = () => {
+  const theme = useTheme();
+  const smScreen = useMediaQuery(theme.breakpoints.up("sm"));
 
-export default function Dashboard() {
-  const [product, setProduct] = useState("");
-  const [time, setTime] = useState("");
-  const [prediction, setPrediction] = useState([{}]);
-  const [actual, setActual] = useState([{}]);
+  const [forecasts, setForecasts] = useState([0]);
+  const [fetching, setFetching] = useState(false);
 
-  //TODO use useEffect to fetch all the products from the DB and add them to the list
-  // const fetchTodos = async () => {
-  //     const response = await fetch("http://localhost:8000/products")
-  //     const products = await response.json()
-  //     setProducts(products.data)
-  //   }
-  // }
+  useEffect(() => {
+    try {
+      fetchForecasts();
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
 
-  async function handlePredict() {
-    //TODO while the model is running add a spinner
-    const response = await fetch(`/products/prediction/${product}/${time}`);
+  const fetchForecasts = async () => {
+    setFetching(true);
+    const response = await fetch("/forecasts/");
     const data = await response.json();
 
-    let resForecast: any = [{ id: "forecast", data: [] }];
-    data.forEach((element: { saleDate: any; forecast: any }) => {
-      resForecast.forEach((object: any) => {
-        object.data.push({ x: element.saleDate, y: element.forecast });
+    setForecasts(data);
+    setFetching(false);
+  };
+
+  function handleDelete(id: any) {
+    const requestOptions = {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ _id: id }),
+    };
+    fetch("/dashboard/delete", requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        fetchForecasts();
+      })
+      .catch((error) => {
+        console.log(error);
       });
-    });
-
-    console.log("resForecast", resForecast);
-
-    let resActual: any = [{ id: "actual", data: [] }];
-    data.forEach((element: { saleDate: any; actual: any }) => {
-      resActual.forEach((object: any) => {
-        object.data.push({ x: element.saleDate, y: element.actual });
-      });
-    });
-
-    setActual(resActual);
-    setPrediction(resForecast);
-
-    return prediction;
   }
 
-  console.log("PRED", prediction);
-  console.log("ACT", actual);
+  const upperContainer = {
+    width: "100%",
+    backgroundColor: "#F7F9FC",
+  };
 
   return (
-    <>
-      <FormControl sx={{ width: "200px", margin: "5px", border: "#7B1EA2" }}>
-        <InputLabel id="product">Product</InputLabel>
-        <Select
-          labelId="productLabel"
-          id="productId"
-          value={product}
-          label="Product"
-          onChange={(e) => setProduct(e.target.value)}
-        >
-          <MenuItem value={"laptop"}>Laptop</MenuItem>
-          <MenuItem value={"paper"}>Paper</MenuItem>
-          <MenuItem value={"keyboards"}>Keyboards</MenuItem>
-        </Select>
-      </FormControl>
-      <FormControl sx={{ width: "200px", margin: "5px" }}>
-        <InputLabel id="time">Time</InputLabel>
-        <Select
-          labelId="timeLabel"
-          id="timeId"
-          value={time}
-          label="Time"
-          onChange={(e) => setTime(e.target.value)}
-        >
-          <MenuItem value={30}>Thirty Days</MenuItem>
-          <MenuItem value={60}>Sixty Days</MenuItem>
-          <MenuItem value={90}>Ninety Days</MenuItem>
-        </Select>
-      </FormControl>
-      <Button
-        onClick={handlePredict}
-        sx={{
-          backgroundColor: "#7B1EA2",
-          color: "white",
-          padding: "8px 22px",
-          margin: "12px 5px",
-          "&:hover": { backgroundColor: "#4A148C" },
-        }}
+    <Box sx={upperContainer}>
+      {/* HEADER */}
+      <Box
+        display={smScreen ? "flex" : "block"}
+        flexDirection={smScreen ? "row" : "column"}
+        justifyContent={smScreen ? "space-between" : "start"}
+        alignItems={smScreen ? "center" : "start"}
+        m="70px 0 0 0"
       >
-        Predict
-      </Button>
-      {Object.keys(prediction[0]).length > 0 &&
-      Object.keys(actual[0]).length > 0 ? (
-        <Chart actual={actual} prediction={prediction}></Chart>
-      ) : (
-        <p>Select a product and a time frame</p>
-      )}
-    </>
+        <Box sx={upperContainer}>
+          <SubHeader title="DASHBOARD" subTitle="Welcome to your dashboard!" />
+        </Box>
+      </Box>
+
+      {/* GRID & CHARTS */}
+      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+        <Grid xs={12} sm={12} md={6} lg={3} xl={3}>
+          <Box
+            sx={{
+              backgroundColor: "white",
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <StatBox
+              title="12,361"
+              subtitle="Emails Sent"
+              progress={0.75}
+              increase="+14%"
+              icon={<EmailIcon sx={{ color: "#303851", fontSize: "26px" }} />}
+            />
+          </Box>
+        </Grid>
+        <Grid xs={12} sm={12} md={6} lg={3} xl={3}>
+          <Box
+            sx={{
+              width: "100%",
+              backgroundColor: "white",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <StatBox
+              title="431,225"
+              subtitle="Sales Obtained"
+              progress={0.5}
+              increase="+21%"
+              icon={
+                <PointOfSaleIcon sx={{ color: "#303851", fontSize: "26px" }} />
+              }
+            />
+          </Box>
+        </Grid>
+        <Grid xs={12} sm={12} md={6} lg={3} xl={3}>
+          <Box
+            sx={{
+              width: "100%",
+              backgroundColor: "white",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <StatBox
+              title="32,441"
+              subtitle="New Clients"
+              progress={0.3}
+              increase="+5%"
+              icon={
+                <PersonAddIcon sx={{ color: "#303851", fontSize: "26px" }} />
+              }
+            />
+          </Box>
+        </Grid>
+        <Grid xs={12} sm={12} md={6} lg={3} xl={3}>
+          <Box
+            sx={{
+              width: "100%",
+              backgroundColor: "white",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <StatBox
+              title="1,325,134"
+              subtitle="Traffic Received"
+              progress={0.8}
+              increase="+43%"
+              icon={<TrafficIcon sx={{ color: "#303851", fontSize: "26px" }} />}
+            />
+          </Box>
+        </Grid>
+        <Box
+          width="100%"
+          sx={{
+            height: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "10px 0",
+            display: "flex",
+            backgroundColor: "#F7F9FC",
+          }}
+        >
+          <Typography
+            variant="h5"
+            sx={{
+              fontFamily: '"Inter", sans-serif',
+              color: "#303851",
+              fontWeight: "400",
+              padding: "10px",
+            }}
+          >
+            Sales Overview
+          </Typography>
+        </Box>
+        <Grid xs={12} sm={12} md={4}>
+          <Box sx={{ backgroundColor: "white", p: "30px" }}>
+            <Typography variant="h5" fontWeight="600">
+              Campaign
+            </Typography>
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              mt="25px"
+            >
+              <ProgressCircle size={125} />
+              <Typography variant="h5" color="#77209D" sx={{ mt: "15px" }}>
+                $48,352 revenue generated
+              </Typography>
+              <Typography>
+                Includes extra misc expenditures and costs
+              </Typography>
+            </Box>
+          </Box>
+        </Grid>
+        <Grid xs={12} sm={12} md={4}>
+          <Box sx={{ backgroundColor: "white" }}>
+            <Typography
+              variant="h5"
+              fontWeight="600"
+              sx={{ padding: "30px 30px 0 30px" }}
+            >
+              Sales per Product
+            </Typography>
+            <Box height="250px">
+              <BarChart isDashboard={true} />
+            </Box>
+          </Box>
+        </Grid>
+        <Grid xs={12} sm={12} md={4}>
+          <Box sx={{ backgroundColor: "white", padding: "32px" }}>
+            <Typography
+              variant="h5"
+              fontWeight="600"
+              sx={{ marginBottom: "15px", fontFamily: '"Inter", sans-serif' }}
+            >
+              Geography-Based Sales
+            </Typography>
+            <Box height="200px">
+              <GeographyChart isDashboard={true} />
+            </Box>
+          </Box>
+        </Grid>
+        <Box
+          width="100%"
+          sx={{
+            height: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "10px 0",
+            display: "flex",
+            backgroundColor: "#F7F9FC",
+          }}
+        >
+          <Typography
+            variant="h5"
+            sx={{
+              fontFamily: '"Inter", sans-serif',
+              color: "#303851",
+              fontWeight: "400",
+              padding: "10px",
+            }}
+          >
+            Saved Forecasts
+          </Typography>
+        </Box>
+        <Grid
+          xs={12}
+          sm={12}
+          md={12}
+          lg={12}
+          container
+          rowSpacing={1}
+          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+        >
+          {forecasts.length === 0 ? (
+            <Box
+              sx={{
+                margin: "10px auto",
+                color: "#40004B",
+                fontFamily: '"Inter", sans-serif',
+              }}
+            >
+              No Forecasts yet!
+            </Box>
+          ) : (
+            forecasts.map((obj: any, index: number) =>
+              obj.data ? (
+                <Grid
+                  key={`${obj["_id"]}`}
+                  xs={12}
+                  sm={12}
+                  md={6}
+                  className="graph-item"
+                  sx={{ backgroundColor: "#F7F9FC" }}
+                >
+                  <Box sx={{ backgroundColor: "white", height: "450px" }}>
+                    <Box
+                      mt="25px"
+                      p="0 30px"
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
+                      <Box>
+                        <h2 className="h2-title">{obj.name}</h2>
+                      </Box>
+
+                      <Box>
+                        <IconButton>
+                          <DownloadOutlinedIcon
+                            sx={{ fontSize: "26px", color: "#77209D" }}
+                          />
+                        </IconButton>
+                      </Box>
+                      <Box>
+                        <IconButton
+                          onClick={() => {
+                            handleDelete(obj["_id"]);
+                          }}
+                        >
+                          <Typography
+                            sx={{ fontFamily: '"Inter", sans-serif' }}
+                          >
+                            delete chart
+                          </Typography>
+                          <DeleteIcon
+                            sx={{ fontSize: "26px", color: "#FED201" }}
+                          />
+                        </IconButton>
+                      </Box>
+                    </Box>
+
+                    <Box
+                      className="graph-item"
+                      m="-20px 0 0 0"
+                      key={`${obj.name}+${index}`}
+                    >
+                      <LineChart
+                        key={`${index}-chart`}
+                        actual={obj.data.sales}
+                        prediction={obj.data.forecast}
+                      />
+                    </Box>
+                  </Box>
+                </Grid>
+              ) : (
+                <Box key="loading" sx={{ margin: "15px auto" }}>
+                  <Typography
+                    variant="h5"
+                    sx={{ fontFamily: '"Inter", sans-serif', color: "#FED201" }}
+                  >
+                    No forecasts yet!
+                  </Typography>
+                </Box>
+              )
+            )
+          )}
+        </Grid>
+      </Grid>
+    </Box>
   );
-}
+};
+
+export default Dashboard;

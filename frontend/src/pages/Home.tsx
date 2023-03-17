@@ -1,57 +1,98 @@
-import React from "react";
-import Header from "../components/Header";
+import React, { useEffect, useState } from "react";
+import { Box, Grid, Typography } from "@mui/material";
+import TouchRipple from "@mui/material/ButtonBase/TouchRipple";
+import Testimonials from "../components/Testimonials";
+import Contact from "../components/Contact";
 
 export default function Home() {
+  const [res, setRes] = useState({ urls: { regular: "", small: "" } });
+
+  const fetchRequest = async () => {
+    const data = await fetch(
+      "https://api.unsplash.com/search/photos?query=artificial intelligence&per_page=50&client_id=gK52De2Tm_dL5o1IXKa9FROBAJ-LIYqR41xBdlg3X2k"
+    );
+    const dataJ = await data.json();
+    const result = dataJ.results;
+
+    let random_img = result[Math.floor(Math.random() * result.length)];
+    setRes(random_img);
+  };
+
+  useEffect(() => {
+    try {
+      fetchRequest();
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
   return (
-    <>
-      <main>
-        <div className="MuiBox-root css-1ybfalx"></div>
-        <div className="MuiBox-root css-0">
-          <div className="MuiBox-root css-1el9aj6">
-            <div className="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-4 css-1tz8m30">
-              <div className="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6 css-himpyl">
-                <div className="MuiBox-root css-0 aos-init aos-animate">
-                  <div className="MuiBox-root css-1qm1lh">
-                    <h2 className="MuiTypography-root MuiTypography-h2 css-1bzl0gy">
+    <Box component="main">
+      <Box className="css-1ybfalx"></Box>
+      <Box className="css-0">
+        <Box className="css-1gygmt4">
+          <Box className="css-374h4r">
+            <Grid container spacing={4} className="MuiGrid-item css-1tz8m30">
+              <Grid className="css-himpyl" item xs={12} md={6}>
+                <Box
+                  component="div"
+                  aos-init="true"
+                  aos-animate="true"
+                  data-aos="fade-right"
+                >
+                  <Box className="css-1qm1lh" sx={{ marginBottom: "16px" }}>
+                    <span className="css-118ie5u">
                       Get insights into
                       <br />
                       your business'{" "}
-                      <span className="MuiTypography-root MuiTypography-inherit css-1tukh29">
-                        success
-                      </span>
-                    </h2>
-                  </div>
-                  <div className="MuiBox-root css-i3pbo">
-                    <p className="MuiTypography-root MuiTypography-h6 css-66t1bw">
+                      <span className="css-1tukh29">success</span>
+                    </span>
+                  </Box>
+                  <Box className="css-i3pbo">
+                    <Typography
+                      component="p"
+                      variant="h6"
+                      className="css-ye5b4g"
+                    >
                       MyForecaster will give you a quick glance at your
                       company's future. Plan your staffing, manage your
-                      inventory and more wit hteh help of MyForecaster.
-                    </p>
-                  </div>
-                  <div className="MuiBox-root css-14hwaxf">
-                    <a
-                      className="MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeLarge MuiButton-containedSizeLarge MuiButtonBase-root  css-1witfr3"
-                      href="/start"
-                    >
+                      inventory and more with the help of MyForecaster.
+                    </Typography>
+                  </Box>
+                  <Box className="css-14hwaxf">
+                    <a className="css-uwfjn8" href="/quickstart/">
                       Quick Start{" "}
-                      <span className="MuiTouchRipple-root css-w0pj6f"></span>
+                      <TouchRipple className="css-w0pj6f"></TouchRipple>
                     </a>
-                    <div className="MuiBox-root css-np4b2e">
+                    <Box className="css-np4b2e">
                       <a
-                        className="MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeLarge MuiButton-outlinedSizeLarge MuiButtonBase-root  css-7vsgjg"
-                        href="/docs"
+                        className="css-1x0ry33"
+                        href="https://github.com/valtereshchenko/my-forecaster"
                       >
                         View documentation{" "}
-                        <span className="MuiTouchRipple-root css-w0pj6f"></span>
+                        <TouchRipple className="css-w0pj6f"></TouchRipple>
                       </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    </>
+                    </Box>
+                  </Box>
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={6} className="MuiGrid-item css-iol86l">
+                <Box className="css-1aez2l4">
+                  <Box>
+                    <img
+                      src={res.urls.regular}
+                      alt="ai 📷"
+                      className="home-image"
+                    />
+                  </Box>
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Box>
+      <Testimonials />
+      <Contact />
+    </Box>
   );
 }

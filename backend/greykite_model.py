@@ -3,6 +3,7 @@ from greykite.framework.templates.model_templates import ModelTemplateEnum
 from greykite.framework.templates.autogen.forecast_config import ForecastConfig
 from greykite.framework.templates.forecaster import Forecaster
 import pandas as pd
+import numpy as np
 
 
 def predict(data: pd.DataFrame, forecast_horizon: int, product: str):
@@ -27,7 +28,14 @@ def predict(data: pd.DataFrame, forecast_horizon: int, product: str):
     )
     forecast = result.forecast
     forecasted_data = forecast.df
-    forecasted_data = forecasted_data.rename(
-        columns={'actual': f'{product}_actual', 'forecast': f'{product}_forecast'})
-    print('forecasted data', forecasted_data)
+
+    # to speed up and  plot only monthly data
+
+    forecasted_data['saleDate'] = pd.to_datetime(forecasted_data['saleDate'])
+    forecasted_data.set_index('saleDate', inplace=True)
+    forecasted_data = forecasted_data.resample('MS').sum().reset_index()
+    # to reproduce the line chart correctly we will need NaNs instead of zeros
+    forecasted_data.replace(0, np.nan, inplace=True)
+
+    print('forecasted', forecasted_data)
     return forecasted_data

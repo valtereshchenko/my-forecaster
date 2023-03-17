@@ -2,23 +2,24 @@ import { ResponsiveLine } from "@nivo/line";
 
 const line1Color = "#2E3648"; //dark theme"#FFD200";
 
-type ChartProps = {
-  actual: {
-    data: { x: string; y: number }[];
-    id: string;
-  }[];
-  prediction: {
-    data: { x: string; y: number }[];
-    id: string;
-  }[];
-};
-export default function Chart({ actual, prediction }: ChartProps) {
+// type ChartProps = {
+//   actual: { data: [{}]; id: string }[];
+//   prediction: { data: [{}]; id: string }[];
+// };
+
+export default function LineChart({ actual, prediction }: any) {
+  let sales: any = [{ id: "actual", data: {} }];
+  let forecast: any = [{ id: "forecast", data: {} }];
+  forecast[0].data = prediction;
+
+  sales[0].data = actual;
+
   return (
     <div className="App">
       <div className="wrapper">
         <div className="graphContainer">
           <ResponsiveLine
-            data={actual}
+            data={sales}
             colors={[line1Color]}
             layers={["grid", "axes", "lines", "markers", "legends"]}
             axisLeft={{
@@ -32,19 +33,18 @@ export default function Chart({ actual, prediction }: ChartProps) {
               legendPosition: "start",
             }}
             theme={getColoredAxis(line1Color)}
-            margin={{ top: 50, right: 50, bottom: 60, left: 55 }}
+            margin={{ top: 50, right: 50, bottom: 70, left: 55 }}
           />
         </div>
 
         <div className="secondGraph">
-          <SecondGraph prediction={prediction} actual={actual} />
+          <SecondGraph prediction={forecast} actual={sales} />
         </div>
       </div>
     </div>
   );
 }
 
-// I want this to be on top of the other graph
 const SecondGraph = ({ prediction, actual }: any) => {
   let data1And2 = actual.concat(prediction);
 

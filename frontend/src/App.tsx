@@ -1,21 +1,27 @@
 import React from "react";
 import "./App.css";
 import Header from "./components/Header";
+import Explore from "./pages/Explore";
 import Dashboard from "./pages/Dashboard";
+import QuickStart from "./pages/QuickStart";
 import Home from "./pages/Home";
+import Footer from "./components/Footer";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Divider } from "@mui/material";
 
 function App() {
   return (
-    <div className="App">
-      <Router>
-        <Header></Header>
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/dashboard/" element={<Dashboard />}></Route>
-        </Routes>
-      </Router>
-    </div>
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/dashboard/" element={<Dashboard />}></Route>
+        <Route path="/quickstart/" element={<QuickStart />}></Route>
+        <Route path="/fileuploader/" element={<Explore />}></Route>
+      </Routes>
+      <Divider />
+      <Footer />
+    </Router>
   );
 }
 
