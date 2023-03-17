@@ -23,6 +23,13 @@ export default function QuickStart() {
     fontWeight: "500",
   };
 
+  const paperStyle = {
+    fontFamily: "Inter, sans-serif",
+    maxWidth: "550px",
+    margin: "-25px 0 0 15px",
+    padding: "10px",
+  };
+
   return (
     <>
       <Box sx={{ height: "65px" }} />
@@ -38,15 +45,7 @@ export default function QuickStart() {
       />
       {!forecasting ? (
         <>
-          <Paper
-            sx={{
-              fontFamily: "Inter, sans-serif",
-              width: "550px",
-              margin: "-25px 0 0 15px",
-              padding: "10px",
-            }}
-            elevation={1}
-          >
+          <Paper sx={paperStyle} elevation={1}>
             <Typography sx={paraphs}>
               MFE is designed to graphically share with you the future forecast
               of the selected variable/product for the selected time period.

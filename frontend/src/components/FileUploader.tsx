@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import Papa from "papaparse";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 type FileUploaderProps = {
   data: boolean;
@@ -52,6 +53,7 @@ export default function FileUploader({
     },
   ]);
   const [showAnalysis, setShowAnalysis] = useState(false);
+  const matches = useMediaQuery("(min-width: 1200px)");
 
   const handleChange = (e: any) => {
     //shoud be :React.ChangeEvent<HTMLInputElement> type
@@ -122,6 +124,10 @@ export default function FileUploader({
 
   const tableCell = {
     fontFamily: '"Inter", sans-serif',
+  };
+
+  const analysisBox = {
+    display: "flex",
   };
 
   return (
@@ -216,13 +222,21 @@ export default function FileUploader({
             </DialogActions>
           </Dialog>
           {showAnalysis ? (
-            <Box sx={{ display: "flex" }}>
+            <Box
+              className="analysisBox"
+              sx={analysisBox}
+              flexDirection={matches ? "row" : "column"}
+              maxWidth={matches ? "100%" : "350px"}
+            >
               <TableContainer
                 component={Paper}
                 elevation={8}
                 sx={{
                   flexBasis: "50%",
                   margin: "15px 0",
+                  "@media(minWidth: 0)": {
+                    maxWidth: "350px",
+                  },
                 }}
               >
                 <Table sx={{ minWidth: 550 }} aria-label="simple table">
