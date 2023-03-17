@@ -20,7 +20,7 @@ app.add_middleware(
 
 @app.on_event("startup")
 def startup_db_client():
-    # please add: ssl_ca_certs=certifi.where() into MongoClient
+    # please add: ssl_ca_certs=certifi.where() inside the MongoClient
     app.mongodb_client = MongoClient(config["ATLAS_URI"])
     app.database = app.mongodb_client[config["DB_NAME"]]
 

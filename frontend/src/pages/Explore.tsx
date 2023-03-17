@@ -50,9 +50,9 @@ export default function Explore() {
           }}
         >
           <img
+            className="explore_img"
             src={require("./explore.png")}
             alt="bulding puzzle"
-            style={{ opacity: "0.7" }}
           ></img>
         </Box>
       ) : (

@@ -18,6 +18,8 @@ Execute `npm install` from inside your app directory to download the dependencie
 Make sure to add the .env file on your local machine one the code is cloned from this repo.
 </br>
 Backend: `pip install -r requirements.txt`
+</br>
+Please also add `ssl_ca_certs=certifi.where()` into the MongoClient before running the backend.
 
 ## Running the project
 
@@ -38,14 +40,13 @@ Once you have selected the `food_sales.csv` in the `Explore & Forecast` screen, 
 
 ## API
 
-| Method | Endpoint            | Functionality                                               | Private access?        |
-| ------ | ------------------- | ----------------------------------------------------------- | ---------------------- |
-| POST   | /auth/register      | Register a user. Email and password are need it (AutoLogin) | :unlock:               |
-| POST   | /auth/login         | Login with email & password                                 | :unlock:               |
-| GET    | /auth/logout        |                                                             | :unlock:               |
-| GET    | /                   | Display Forecasting Engine info & images                    | :unlock:               |
-| GET    | /start              | Select product and the forecast horizon to predict          | :closed_lock_with_key: |
-| GET    | /user/dashboard     | Display all my Graphs                                       | :closed_lock_with_key: |
-| GET    | /:id                | Get graph by id                                             | :closed_lock_with_key: |
-| POST   | /user/dashboard     | Add graph to my Dashboard                                   | :closed_lock_with_key: |
-| DELETE | /user/dashboard/:id | Delete a graph from my Dashboard                            | :closed_lock_with_key: |
+| Method | Endpoint                               | Functionality                                                  | Private access?        |
+| ------ | -------------------------------------- | -------------------------------------------------------------- | ---------------------- |
+| GET    | /explore/collection/id                 | Get the product names from the Database                        | :unlock:               |
+| GET    | /forecasts                             | Display all saved Graphs                                       | :closed_lock_with_key: |
+| GET    | /prediction/product/time/collection/id | Get uploaded by the user data by id and run the forecast on it | :closed_lock_with_key: |
+| POST   | /prediction/save                       | Save a new forecast to the Database                            | :closed_lock_with_key: |
+| POST   | /message/                              | Save a new user message to the Database                        | :unlock:               |
+| POST   | /uploadfile                            | Saves data uploaded by the user to the Database                | :closed_lock_with_key: |
+| PUT    | /prediction/id                         | Update the name/info of the saved forecast                     | :unlock:               |
+| DELETE | /dashboard/delete                      | Delete a graph from my Dashboard                               | :closed_lock_with_key: |

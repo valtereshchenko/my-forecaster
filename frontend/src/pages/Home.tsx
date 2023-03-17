@@ -78,8 +78,12 @@ export default function Home() {
               </Grid>
               <Grid item xs={12} md={6} className="MuiGrid-item css-iol86l">
                 <Box className="css-1aez2l4">
-                  <Box className="home-image">
-                    <img src={res.urls.regular} alt="ai 📷" />
+                  <Box>
+                    <img
+                      src={res.urls.regular}
+                      alt="ai 📷"
+                      className="home-image"
+                    />
                   </Box>
                 </Box>
               </Grid>
