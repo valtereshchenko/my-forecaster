@@ -6,8 +6,11 @@ import "./styles/Testimonials.css";
 import Slider from "react-slick";
 import { Box, Avatar, Typography } from "@mui/material";
 import testimonials from "./testimonials.json";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export default function Testimonials() {
+  const matches = useMediaQuery("(min-width: 900px)");
+
   // styling
   const avatar = {
     height: "60px",
@@ -26,12 +29,14 @@ export default function Testimonials() {
     fontWeight: "500",
   };
 
+  const slidesToShow = matches ? 3 : 1;
+
   const settings = {
     className: "center",
     centerMode: false,
     infinite: false,
     centerPadding: "20px",
-    slidesToShow: 3,
+    slidesToShow: slidesToShow,
     speed: 500,
     dots: true,
   };

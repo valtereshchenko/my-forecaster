@@ -14,7 +14,7 @@ export default function Footer() {
               </a>
               <Box className="footer-nav">
                 <Box className="nav-item">
-                  <a className="nav-button" href="/about">
+                  <a className="nav-button" href="/">
                     About
                   </a>
                 </Box>
