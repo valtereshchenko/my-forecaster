@@ -2,12 +2,17 @@ import { ResponsiveLine } from "@nivo/line";
 
 const line1Color = "#2E3648"; //dark theme"#FFD200";
 
-// type ChartProps = {
-//   actual: { data: [{}]; id: string }[];
-//   prediction: { data: [{}]; id: string }[];
-// };
-
-export default function Chart({ actual, prediction }: any) {
+type ChartProps = {
+  actual: {
+    data: { x: string; y: number }[];
+    id: string;
+  }[];
+  prediction: {
+    data: { x: string; y: number }[];
+    id: string;
+  }[];
+};
+export default function Chart({ actual, prediction }: ChartProps) {
   return (
     <div className="App">
       <div className="wrapper">

@@ -54,7 +54,6 @@ const Dashboard = () => {
     fetch("/dashboard/delete", requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         fetchForecasts();
       })
       .catch((error) => {
@@ -332,7 +331,14 @@ const Dashboard = () => {
                   </Box>
                 </Grid>
               ) : (
-                <Box key="loading">Loading...</Box>
+                <Box key="loading" sx={{ margin: "15px auto" }}>
+                  <Typography
+                    variant="h5"
+                    sx={{ fontFamily: '"Inter", sans-serif', color: "#FED201" }}
+                  >
+                    No forecasts yet!
+                  </Typography>
+                </Box>
               )
             )
           )}

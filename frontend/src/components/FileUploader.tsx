@@ -96,7 +96,7 @@ export default function FileUploader({
 
         await axios(requestOptions)
           .then((response) => {
-            if (response.status === 200) {
+            if (response.status === 201) {
               setShowAnalysis(true);
               setAnalysis(response.data.analysis);
               setData(true);

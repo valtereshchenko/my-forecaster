@@ -2,7 +2,7 @@ from fastapi import APIRouter, Body, Request, HTTPException, status
 from fastapi.responses import Response, JSONResponse
 from fastapi.encoders import jsonable_encoder
 from typing import List
-from models import PredictionModel, ForecastsModel, PyObjectId, ChartModel
+from models import PredictionModel, ForecastsModel, PyObjectId, AnalysisModel, ChartModel, UpdateChartModel
 import pandas as pd
 from greykite_model import predict
 from datetime import date
@@ -124,8 +124,7 @@ def add_message(request: Request, data: dict = Body(...)):
                 "message": "Ooops! Something went wrong."}
 
 
-@ router.post("/uploadfile", response_description="File uploaded",
-              status_code=200, responses={200: {"description": "Your file has been uploaded successfully!"}, 400: {"decription": "Oooops, something went wrong!"}})
+@ router.post("/uploadfile", response_description="File uploaded", response_model=AnalysisModel)
 def upload_file(request: Request, data: dict = Body(...)):
     """
     Uploads the file selected by the user to the DB uploaded_data colletion
@@ -164,13 +163,39 @@ def upload_file(request: Request, data: dict = Body(...)):
     ))
 
     if (created_record is not None):
-        return {"status_code": 200,
-                "message": "A new file has been uploaded successfully!",
-                "analysis": analysis_to_insert,
-                "id": id}
+        return JSONResponse(status_code=status.HTTP_201_CREATED, content={
+            "id": id,
+            "analysis": analysis_to_insert
+        })
     else:
         return {"status_code": 400,
                 "message": "Ooops! Something went wrong."}
+
+
+@router.put('prediction/{id}', response_description='Update a saved chart', response_model=ChartModel)
+def update_chart(id: str, request: Request, chart: UpdateChartModel = Body(...)):
+    """
+    Receives the id of the document to update as well as the new data in the JSON body. 
+    Iterate over all the items in the received dictionary and only add the items that have a value to our new document.
+    If there are no fields left to update, looks for an existing record that matches the id and returns that unaltered.
+    """
+
+    chart = {k: v for k, v in chart.dict().items() if v is not None}
+
+    if len(chart) >= 1:
+        update_result = request.app.database.saved_charts.update_one({"_id": id}, {
+                                                                     "$set": chart})
+        updated_chart = request.app.database.saved_charts.find_one({
+            "_id": id})
+        if update_result.modified_count == 1:
+            if updated_chart is not None:
+                return updated_chart
+
+    existing_chart = request.app.database.saved_charts.find_one({"_id": id})
+    if existing_chart is not None:
+        return existing_chart
+
+    raise HTTPException(status_code=404, detail=f"Student {id} not found")
 
 
 @ router.delete('/dashboard/delete', response_description="Chart deleted")

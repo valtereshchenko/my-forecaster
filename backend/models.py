@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field, validator
 from bson import ObjectId
-from typing import Optional
+from typing import Optional, List
 from datetime import date
 import numpy as np
 
@@ -76,9 +76,9 @@ class PredictionModel(BaseModel):
 
 class ChartModel(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
-    data: dict
-    name: str
-    date: str
+    data: dict = Field(...)
+    name: str = Field(...)
+    date: str = Field(...)
 
     class Config:
         allow_population_by_field_name = True
@@ -87,6 +87,42 @@ class ChartModel(BaseModel):
         schema_extra = {
             "example": {
                 "_id": "63f747bcb2ac35288903a1c1",
+                "data": {"name": "Laptop Sales Forecasts", "forecast": [], "sales": []},
+                "name": "Laptop Sales Forecasts",
+                "date": "2023-01-01"
+            }
+        }
+
+
+class UpdateChartModel(BaseModel):
+    # does not have an id attribute as this should never change.
+    data: Optional[dict]
+    name: Optional[str]
+    date: Optional[str]
+
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+            "example": {
+                "data": {"name": "Laptop Sales Forecasts", "forecast": [], "sales": []},
+                "name": "Laptop Sales Forecasts",
+                "date": "2023-01-01"
+            }
+        }
+
+
+class AnalysisModel(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    analysis: List[dict] = Field(...)
+
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+            "example": {
                 "data": {"name": "Laptop Sales Forecasts", "forecast": [], "sales": []},
                 "name": "Laptop Sales Forecasts",
                 "date": "2023-01-01"

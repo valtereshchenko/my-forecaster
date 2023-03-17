@@ -30,6 +30,16 @@ type ForecastProps = {
   handleActive?: (value: boolean) => void;
 };
 
+type ActualType = {
+  data: { x: string; y: number }[] | [];
+  id: string;
+}[];
+
+type PredictionType = {
+  data: { x: string; y: number }[] | [];
+  id: string;
+}[];
+
 export default function Forecast({
   fetching,
   handleFetch,
@@ -44,8 +54,8 @@ export default function Forecast({
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState("");
   const [time, setTime] = useState("");
-  const [prediction, setPrediction] = useState([{ data: [] }]);
-  const [actual, setActual] = useState([{ data: [] }]);
+  const [prediction, setPrediction] = useState<PredictionType>([]);
+  const [actual, setActual] = useState<ActualType>([]);
   const [name, setName] = useState("");
   const [open, setOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
@@ -55,7 +65,7 @@ export default function Forecast({
   useEffect(() => {
     const fetchProducts = async () => {
       handleFetch(true);
-      console.log("URL", url);
+
       const response = await fetch(`${url}`);
       const products = await response.json();
 
@@ -255,8 +265,9 @@ export default function Forecast({
             </DialogActions>
           </Dialog>
           <Box sx={{ height: "60px" }} />
-          {Object.keys(prediction[0]).length > 1 &&
-          Object.keys(actual[0]).length > 1 ? (
+          {typeof prediction[0] === "object" &&
+          Object.keys(prediction[0])?.length > 1 &&
+          Object.keys(actual[0])?.length > 1 ? (
             <Box sx={{ backgroundColor: "white" }}>
               <Box
                 sx={{
