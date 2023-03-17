@@ -268,7 +268,15 @@ const Dashboard = () => {
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
         >
           {forecasts.length === 0 ? (
-            <Box>Loading your forecasts...</Box>
+            <Box
+              sx={{
+                margin: "10px auto",
+                color: "#40004B",
+                fontFamily: '"Inter", sans-serif',
+              }}
+            >
+              No Forecasts yet!
+            </Box>
           ) : (
             forecasts.map((obj: any, index: number) =>
               obj.data ? (
