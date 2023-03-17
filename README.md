@@ -19,7 +19,7 @@ Make sure to add the .env file on your local machine one the code is cloned from
 </br>
 Backend: `pip install -r requirements.txt`
 </br>
-Please also add `ssl_ca_certs=certifi.where()` into the MongoClient before running the backend.
+Please also add `ssl_ca_certs=certifi.where()` into the MongoClient in `/backend/main.py` before running the backend.
 
 ## Running the project
 

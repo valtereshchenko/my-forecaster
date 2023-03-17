@@ -82,7 +82,7 @@ def get_uploaded_data(request: Request, id: str, collection: str):
 @ router.post("/prediction/save", response_description="Save selected forecast to the DB", response_model=ChartModel)
 def save_forecast(request: Request, data: dict = Body(...)):
     """
-    Received the new forecast data as a JSON in a post request
+    Receives the new forecast data as a JSON in a post request
     Saves the newly created forecast to the DB
     """
     new_data = request.app.database.saved_charts.insert_one(
@@ -106,7 +106,7 @@ def save_forecast(request: Request, data: dict = Body(...)):
               )
 def add_message(request: Request, data: dict = Body(...)):
     """
-    Saved the user message from the contact form to the DB
+    Saves the user message from the contact form to the DB
     """
     data = jsonable_encoder(data)
 
