@@ -304,6 +304,9 @@ div {
   .css-uwfjn8 {
     margin-right: 7px;
   }
+  img {
+    max-width: 400px;
+  }
 }
 
 @media only screen and (min-width: 600px) {
@@ -354,6 +357,9 @@ div {
     max-width: 1236px;
     padding-top: 64px;
     padding-bottom: 64px;
+  }
+  img {
+    max-width: 550px;
   }
 }
 
