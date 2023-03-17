@@ -14,8 +14,8 @@ import {
   Typography,
   Button,
   Paper,
-  useMediaQuery,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -30,6 +30,7 @@ export default function DrawerAppBar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [position, setPosition] = useState(window.pageYOffset);
   const [visible, setVisible] = useState(true);
+  const navigate = useNavigate();
 
   const toolBarHeight = {
     minHeight: "57px",
@@ -110,7 +111,7 @@ export default function DrawerAppBar() {
                       "&:hover": { backgroundColor: "#4A148C" },
                     },
                   }}
-                  href={item.link}
+                  onClick={() => navigate(item.link)}
                 >
                   {item.name}
                 </Button>
