@@ -53,20 +53,20 @@ export default function FileUploader({
     },
   ]);
   const [showAnalysis, setShowAnalysis] = useState(false);
-  const matches = useMediaQuery("(min-width: 1200px)");
+  const matches = useMediaQuery("(min-width: 900px)");
 
-  const handleChange = (e: any) => {
-    //shoud be :React.ChangeEvent<HTMLInputElement> type
-
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Passing file data (event.target.files[0]) to parse using Papa.parse
-    Papa.parse(e.target.files[0], {
-      header: true,
-      skipEmptyLines: true,
-      complete: function (results: any) {
-        // Parsed Data Response in array format
-        setFile(results.data);
-      },
-    });
+    if (e.target.files) {
+      Papa.parse(e.target.files[0], {
+        header: true,
+        skipEmptyLines: true,
+        complete: function (results: any) {
+          // Parsed Data Response in array format
+          setFile(results.data);
+        },
+      });
+    }
   };
 
   const handleClickOpen = () => {

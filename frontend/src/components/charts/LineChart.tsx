@@ -2,12 +2,12 @@ import { ResponsiveLine } from "@nivo/line";
 
 const line1Color = "#2E3648"; //dark theme"#FFD200";
 
-// type ChartProps = {
-//   actual: { data: [{}]; id: string }[];
-//   prediction: { data: [{}]; id: string }[];
-// };
+type ChartProps = {
+  actual: { x: string; y: number }[];
+  prediction: { x: string; y: number }[];
+};
 
-export default function LineChart({ actual, prediction }: any) {
+export default function LineChart({ actual, prediction }: ChartProps) {
   let sales: any = [{ id: "actual", data: {} }];
   let forecast: any = [{ id: "forecast", data: {} }];
   forecast[0].data = prediction;

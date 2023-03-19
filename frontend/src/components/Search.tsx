@@ -6,15 +6,20 @@ import "./styles/Search.css";
 export default function Search() {
   const [results, setResults] = useState([]);
 
-  const handleChange = (e: any) => {
-    e.preventDefault();
+  const handleChange = (
+    event: React.SyntheticEvent<Element, Event>,
+    value: string
+  ) => {
+    event.preventDefault();
     setResults([]);
+
+    const target = event.target as HTMLInputElement;
 
     const requestOptions: RequestInit = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ searchQuery: e.target.value }),
+      body: JSON.stringify({ searchQuery: target.value }),
     };
     fetch(`/search`, requestOptions)
       .then((response) => {
@@ -25,8 +30,8 @@ export default function Search() {
         setResults(data);
         console.log(results);
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((event) => {
+        console.log(event);
       });
   };
 
